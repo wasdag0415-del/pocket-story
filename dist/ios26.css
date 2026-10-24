@@ -85,3 +85,4 @@ dialog::backdrop{background:rgba(10,15,25,.24);backdrop-filter:blur(7px);-webkit
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .ios-dock,.ios-widget-calendar,.ios-widget-pann,.ios-app-header,.nf-extra-head,.ios-phone-bottom,.ios-safari-bottom{background:rgba(244,247,251,.94)!important}
 }
+.ios-app-icon.weather{background:linear-gradient(160deg,#35a8ff,#1973dc)}.ios-weather-mark{width:39px;height:39px;display:block;position:relative}.ios-weather-mark:before{content:"";position:absolute;width:20px;height:20px;border-radius:50%;background:#ffd43b;left:4px;top:3px;box-shadow:0 0 0 1px #ffffff55}.ios-weather-mark:after{content:"";position:absolute;width:29px;height:14px;border-radius:14px;background:#fff;left:7px;bottom:6px;box-shadow:9px -6px 0 -1px #fff}.ios-weather-mark i{display:none}
