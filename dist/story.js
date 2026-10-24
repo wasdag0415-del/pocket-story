@@ -20,7 +20,7 @@
     officialUnlocked: false,
     officialSeen: false,
     chapterComplete: false,
-    chapter: { revision: 1, opening: false, read: [], invite: false, replied: false }
+    chapter: { revision: 1, opening: false, read: [], invite: false, replied: false, step: 0, messages: [] }
   });
 
   function normalize(value) {
@@ -39,6 +39,11 @@
       for (const e of root.PocketChapterEvents) { if (value.chapter.read?.[next.chapter.read.length] !== e.id) break; next.chapter.read.push(e.id); }
       next.chapter.invite = next.chapter.read.length === root.PocketChapterEvents.length && value.chapter.invite === true;
       next.chapter.replied = next.chapter.invite && value.chapter.replied === true;
+      next.chapter.step = Math.max(0, Math.min(4, Number(value.chapter.step) || (next.chapter.replied ? 4 : next.chapter.invite ? 3 : next.chapter.opening ? 1 : 0)));
+      next.chapter.messages = Array.isArray(value.chapter.messages) ? value.chapter.messages
+        .filter((item) => item && typeof item.text === 'string' && Number.isInteger(item.step))
+        .slice(-24).map((item) => ({ step: item.step, text: item.text.trim().slice(0, 240) }))
+        .filter((item) => item.text) : [];
     }
     next.chapterComplete = next.chapter.replied;
     return next;
@@ -113,13 +118,13 @@
     if (statusTime) statusTime.textContent = storyTime();
     bind();
     const scroll = context.screen.querySelector('.nf-scroll');
-    if (scroll) scroll.scrollTop = 0;
+    if (scroll) scroll.scrollTop = route === 'currentchat' ? scroll.scrollHeight : 0;
   }
 
   function opening() { return currentchat(); }
 
   function ktstory() {
-    return wrap(`<header class='nf-head nf-kkt-head'><button data-nav='phonehome' aria-label='返回手机'>‹</button><strong>KakaoTalk</strong><button data-route='notebook' aria-label='打开备忘录'>▤</button></header><div class='nf-scroll nf-kkt-list'><button class='nf-kkt-row' data-route='managerchat'><span class='nf-kkt-avatar'>M</span><span><strong>manager</strong><p>明天集合提前十五分钟。</p></span><time>20:50</time>${badge() ? '<i>1</i>' : ''}</button><button class='nf-kkt-row' data-route='currentchat'><img class='pc-avatar' src='assets/avatars/irene.jpg' alt='组长老师头像'><span><strong>组长老师</strong><p>${state.chapter.replied?'就附近，不走远':state.chapter.invite?'按完好点了吗？':'去按了吗？'}</p></span><time>21:26</time></button><button class='nf-kkt-row' data-route='groupchat'><span class='nf-kkt-avatar'>RV</span><span><strong>Red Velvet</strong><p>Yeri：合照发群里！</p></span><time>21:17</time></button><button class='nf-kkt-row' data-kkt-thread='wendy'><span class='nf-kkt-avatar'>W</span><span><strong>Wendy</strong><p>到酒店以后跟我说一声</p></span><time>18:09</time></button><button class='nf-kkt-row' data-kkt-thread='japan'><span class='nf-kkt-avatar'>JP</span><span><strong>日本运营</strong><p>首场照片会在确认后上传。</p></span><time>20:46</time></button><button class='nf-kkt-row' data-kkt-thread='styling'><span class='nf-kkt-avatar'>S</span><span><strong>造型室</strong><p>明天先试第二套耳饰。</p></span><time>17:38</time></button><button class='nf-kkt-row' data-kkt-thread='joy'><span class='nf-kkt-avatar'>J</span><span><strong>Joy</strong><p>不是说好要拍给我看吗ㅋㅋ</p></span><time>9月18日</time></button></div>`, 'nf-kkt-app');
+    return wrap(`<header class='nf-head nf-kkt-head'><button data-nav='phonehome' aria-label='返回手机'>‹</button><strong>KakaoTalk</strong><button data-route='notebook' aria-label='打开备忘录'>▤</button></header><div class='nf-scroll nf-kkt-list'><button class='nf-kkt-row nf-kkt-pinned' data-route='currentchat'><img class='pc-avatar' src='assets/avatars/irene.jpg' alt='组长老师头像'><span><strong>组长老师 <em class='nf-kkt-pin'>置顶</em></strong><p>${state.chapter.replied?'就附近，不走远':state.chapter.invite?'按完好点了吗？':'去按了吗？'}</p></span><time>21:26</time>${badge() ? '<i>1</i>' : ''}</button><button class='nf-kkt-row' data-route='managerchat'><span class='nf-kkt-avatar'>M</span><span><strong>manager</strong><p>明天集合提前十五分钟。</p></span><time>20:50</time></button><button class='nf-kkt-row' data-route='groupchat'><span class='nf-kkt-avatar'>RV</span><span><strong>Red Velvet</strong><p>Yeri：合照发群里！</p></span><time>21:17</time></button><button class='nf-kkt-row' data-kkt-thread='wendy'><span class='nf-kkt-avatar'>W</span><span><strong>Wendy</strong><p>到酒店以后跟我说一声</p></span><time>18:09</time></button><button class='nf-kkt-row' data-kkt-thread='japan'><span class='nf-kkt-avatar'>JP</span><span><strong>日本运营</strong><p>首场照片会在确认后上传。</p></span><time>20:46</time></button><button class='nf-kkt-row' data-kkt-thread='styling'><span class='nf-kkt-avatar'>S</span><span><strong>造型室</strong><p>明天先试第二套耳饰。</p></span><time>17:38</time></button><button class='nf-kkt-row' data-kkt-thread='joy'><span class='nf-kkt-avatar'>J</span><span><strong>Joy</strong><p>不是说好要拍给我看吗ㅋㅋ</p></span><time>9月18日</time></button></div>`, 'nf-kkt-app');
   }
 
 
@@ -163,13 +168,14 @@
     if(step >= 3) lines.push({role:'them',text:'就附近，不走远'});
     if(step >= 4) lines.push({role:'me',text:'好啊'});
     
-    // 信息框预设回复
-    let composer = '';
-    if(step === 0) composer = '<div class="pc-composer"><span>嗯，刚按完回来</span><button data-next-step="1">发送 ↑</button></div>';
-    else if(step === 1) composer = '<div class="pc-composer"><span>好</span><button data-next-step="2">发送 ↑</button></div>';
-    else if(step === 2) composer = '<div class="pc-composer"><span>好一点了，没刚才那么紧</span><button data-next-step="3">发送 ↑</button></div>';
-    else if(step === 3) composer = '<div class="pc-composer"><span>好啊</span><button data-next-step="4">发送 ↑</button></div>';
-    else composer = '<div class="pc-chat-footer">第一章 · 完</div>';
+    const saved = new Map(state.chapter.messages.filter((item)=>item.step<=4).map((item)=>[item.step,item.text]));
+    if(step >= 1) lines[1].text=saved.get(1)||lines[1].text;
+    if(step >= 2) lines[3].text=saved.get(2)||lines[3].text;
+    if(step >= 3) lines[5].text=saved.get(3)||lines[5].text;
+    if(step >= 4) lines[8].text=saved.get(4)||lines[8].text;
+    state.chapter.messages.filter((item)=>item.step>4).forEach((item)=>lines.push({role:'me',text:item.text}));
+    const hints=['回复“去按了吗？”','输入消息','回复“按完好点了吗？”','回复散步邀请','输入消息'];
+    const composer = `<form id="pc-story-composer" class="pc-composer"><input id="pc-story-input" maxlength="240" autocomplete="off" placeholder="${hints[step]||'输入消息'}" aria-label="KakaoTalk 消息" required><button aria-label="发送消息">↑</button></form>`;
     
     return wrap(`${head('组长老师','ktstory','<button data-route="sharedphotos" aria-label="共享照片">▧</button>')}<div class="nf-scroll nf-chat-scroll">${bubbles([{date:'9月19日 · 首场结束以后',who:'组长老师',lines}])}</div>${composer}`,'nf-story-chat');
   }
@@ -356,15 +362,22 @@
     screen.querySelectorAll('[data-yt-video]').forEach(b=>b.onclick=()=>{youtubeVideo=b.dataset.ytVideo;render();});
     screen.querySelectorAll('[data-yt-back]').forEach(b=>b.onclick=()=>{youtubeVideo='';render();});
     screen.querySelectorAll('[data-kkt-thread]').forEach(b=>b.onclick=()=>{kktThread=b.dataset.kktThread;go('sidechat');});
-    screen.querySelectorAll('[data-next-step]').forEach(b=>b.onclick=()=>{
-      state.chapter.step = Number(b.dataset.nextStep);
+    const composer=screen.querySelector('#pc-story-composer');
+    if(composer) composer.onsubmit=(event)=>{
+      event.preventDefault();
+      const input=screen.querySelector('#pc-story-input'),text=input.value.trim();
+      if(!text)return;
+      const previous=state.chapter.step||0;
+      state.chapter.step=Math.min(4,previous+1);
+      state.chapter.messages.push({step:previous<4?state.chapter.step:5,text:text.slice(0,240)});
+      state.chapter.messages=state.chapter.messages.slice(-24);
       // 同步原来的状态字段，保持兼容
       if(state.chapter.step >= 1) state.chapter.opening = true;
       if(state.chapter.step >= 3) state.chapter.invite = true;
-      if(state.chapter.step >= 4) state.chapter.replied = true;
+      if(state.chapter.step >= 4){state.chapter.replied = true;state.chapterComplete=true;}
       save();
       render();
-    });
+    };
     screen.querySelectorAll('[data-photo-detail]').forEach(b=>b.onclick=()=>{screen.querySelector('#pc-photo-detail').hidden=false;});
     screen.querySelectorAll('[data-history]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.history);if(i<=state.chapter.read.length){eventIndex=i;go('historychat');}});
     screen.querySelectorAll('[data-event-read]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.eventRead);if(i===state.chapter.read.length)state.chapter.read.push(root.PocketChapterEvents[i].id);save();if(i===6){if(!state.chapter.invite){state.chapter.invite=true;save();context.toast('组长老师：按完好点了吗？');}go('currentchat');}else{eventIndex=i+1;go('historychat');}});
