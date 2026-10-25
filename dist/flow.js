@@ -8,7 +8,7 @@
 
   // 开场：锁屏 → KKT 两轮 → 日历推送 → 信息推送 → 确认主人
   const STEPS = [
-    { id:'N02_KKT_OPENED', await:'reply', them:['去按了吗？'],
+    { id:'N02_KKT_OPENED', await:'reply', maxChats:3, them:['去按了吗？'],
       pick:['finished','going','not_done','avoid'],
       exit:{ finished:1 },
       resp:{ finished:[], going:['嗯，结束了告诉我。'], not_done:['不是说结束以后就去吗？','别又拖着。'], avoid:['问你去按了吗。'], '*':['？','去按摩了吗？'] } },
@@ -59,7 +59,10 @@
       intent = s.pick.find((k) => tags.includes(k)) || '*';
     }
     state.log = state.log || [];
+    const _mine = state.log.filter((m) => m.role === 'me').length;
+    const _max = s.maxChats || 99;
     state.log.push({ role: 'me', text: clean });
+    if (_mine >= _max) { state.replies[state.i] = clean; save(); return true; }
     const lines = s.resp ? (s.resp[intent] || s.resp['*'] || []) : [];
     lines.forEach((t) => state.log.push({ role: 'them', text: t }));
     state.replies[state.i] = clean;
