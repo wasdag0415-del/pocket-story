@@ -9,34 +9,27 @@
   // 开场：锁屏 → KKT 两轮 → 日历推送 → 信息推送 → 确认主人
   const STEPS = [
     {
-      id: 'kkt1',
+      id: 'dinner-ask',
       view: 'ktstory',
-      them: ['去按了吗？'],
+      them: ['那还去吃吗？'],
       await: 'reply',
       hint: '回复她'
     },
     {
-      id: 'kkt2',
-      them: ['先休息一下。', '按完好点了吗？'],
-      await: 'reply',
-      hint: '回复她'
-    },
-    {
-      id: 'kkt3',
-      them: ['好。', '明天十点半彩排，别睡太晚。'],
+      id: 'dinner-cancel',
+      them: ['好。', '到酒店告诉我。'],
       await: 'none',
-      push: { app: '日历', title: '明日 10:30 · 福冈场彩排', text: '出发时间已更新', view: 'calendar' }
+      push: { app: 'Apple 钱包', title: '23:41 · 7-Eleven', text: '¥1,180' }
     },
     {
-      id: 'calendar',
-      await: 'open:calendar',
-      pushAfter: { app: '信息', title: '日本运营', text: '涩琪老师，更新后的车辆时间已经发送。', view: 'sms' }
+      id: 'food-ask',
+      them: ['吃东西了吗？'],
+      await: 'reply'
     },
     {
-      id: 'sms',
-      await: 'open:sms',
-      ownerConfirmed: true,
-      pushAfter: { app: 'KakaoTalk', title: '系统', text: '聊天记录同步完成', view: 'ktstory' }
+      id: 'food-done',
+      them: ['别只吃零食。'],
+      await: 'none'
     }
   ];
 
