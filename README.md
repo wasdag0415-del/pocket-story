@@ -19,7 +19,7 @@ Narrative evidence uses labeled HTML/CSS diagrams and text records. The main thr
 ## Persistence and updates
 
 - Existing phone data stays under `pocket-star-v1`; recorded audio remains in the existing `pocket-star-audio` IndexedDB.
-- New narrative state uses `foundphone-jp-story-v1` with a versioned schema. It never writes the phone's chat or audio stores.
+- New narrative state uses `pocket-story-same-blank-ch1-v2` with a versioned schema. It never writes the phone's chat or audio stores.
 - Story records live in `dist/story-data.js`. Keep the episode ID and existing post/comment/evidence IDs stable; append content rather than recreating IDs.
 - `dist/story.js` handles forum browsing, search, clues, branching and independent save export/import. `dist/story.css` styles these views; `dist/pann.css` scopes a Pann-inspired white/red ranked forum and BEST replies to forum views. Forum post recommendations are additive save fields and preserve existing progress.
 - Exploration notes export/import story JSON. Import requires an explicit in-game confirmation before replacement. Settings retain the existing phone export; recorded audio blobs are not included in that text export.
@@ -27,7 +27,9 @@ Narrative evidence uses labeled HTML/CSS diagrams and text records. The main thr
 
 ## Validation
 
-`npm install` then `npm test` runs DOM-based integration tests using LinkeDOM. Tests cover the full evidence path, alternate reply, hidden search result, save/reload, favorites, escaping and legacy contact/message/audio metadata preservation plus original chat sending and simulated reply. Run `node --check` on shipped JavaScript for syntax.
+`npm install` then `npm test` runs DOM-based integration tests using LinkeDOM (`tests/story-flow.cjs`). They cover boot, swipe-to-unlock and passcode, forum reading and bookmarks, the three forum replies, the outsider advice panel, the progress card, the official post, the final judgment and chapter completion, rumor fragments, category search, the free-text KakaoTalk chapter, save/reload persistence, legacy phone-data isolation, HTML escaping and save export. Run `node --check` on shipped JavaScript for syntax.
+
+Chapter 01 closes through the official post: once the conversation reaches its last step, the feed's progress card offers `刷新热帖，查看官方更新`, which unlocks the RV JP photos and the `保存这条记录，结束第一章` button.
 
 Managed preview/browser QA was unavailable in this environment; no preview server was started. Visual layout, microphone permissions, audible playback and real phone keyboard behavior still need actual browser/device QA.
 

@@ -34,18 +34,26 @@
     next.outsiderReply = ['facts', 'feeling', 'lost'].includes(value.outsiderReply) ? value.outsiderReply : '';
     next.judgment = ['changed', 'tired', 'unknown'].includes(value.judgment) ? value.judgment : '';
     next.rumorSeen = Array.isArray(value.rumorSeen) ? [...new Set(value.rumorSeen.filter((id) => ['first', 'second', 'third'].includes(id)))] : [];
-    if (value.chapter?.revision === 1) {
-      next.chapter.opening = value.chapter.opening === true;
-      for (const e of root.PocketChapterEvents) { if (value.chapter.read?.[next.chapter.read.length] !== e.id) break; next.chapter.read.push(e.id); }
-      next.chapter.invite = next.chapter.read.length === root.PocketChapterEvents.length && value.chapter.invite === true;
-      next.chapter.replied = next.chapter.invite && value.chapter.replied === true;
-      next.chapter.step = Math.max(0, Math.min(4, Number(value.chapter.step) || (next.chapter.replied ? 4 : next.chapter.invite ? 3 : next.chapter.opening ? 1 : 0)));
-      next.chapter.messages = Array.isArray(value.chapter.messages) ? value.chapter.messages
-        .filter((item) => item && typeof item.text === 'string' && Number.isInteger(item.step))
-        .slice(-24).map((item) => ({ step: item.step, text: item.text.trim().slice(0, 240) }))
-        .filter((item) => item.text) : [];
+    // Chapter progress must survive reloads even when replay data is missing or
+    // shorter than before: keep whatever the save holds instead of resetting it.
+    const events = Array.isArray(root.PocketChapterEvents) ? root.PocketChapterEvents : [];
+    const storedChapter = value.chapter && typeof value.chapter === 'object' ? value.chapter : {};
+    const rawRead = Array.isArray(storedChapter.read) ? storedChapter.read : [];
+    for (const id of rawRead) {
+      if (typeof id !== 'string' || next.chapter.read.includes(id)) continue;
+      next.chapter.read.push(id);
+      if (next.chapter.read.length === events.length) break;
     }
-    next.chapterComplete = next.chapter.replied;
+    const storedStep = Number(storedChapter.step);
+    next.chapter.step = Number.isFinite(storedStep) ? Math.max(0, Math.min(4, Math.trunc(storedStep))) : 0;
+    next.chapter.messages = Array.isArray(storedChapter.messages) ? storedChapter.messages
+      .filter((item) => item && typeof item.text === 'string' && Number.isInteger(item.step))
+      .slice(-24).map((item) => ({ step: item.step, text: item.text.trim().slice(0, 240) }))
+      .filter((item) => item.text) : [];
+    next.chapter.opening = storedChapter.opening === true || next.chapter.step >= 1 || next.chapter.read.length > 0;
+    next.chapter.invite = storedChapter.invite === true || next.chapter.opening;
+    next.chapter.replied = storedChapter.replied === true || next.chapter.step >= 4;
+    next.chapterComplete = value.chapterComplete === true || next.chapter.replied;
     return next;
   }
 
@@ -79,7 +87,10 @@
     }
   }
 
-  function ready(value = state) { return value.chapter.opening && value.chapter.read.length === root.PocketChapterEvents.length; }
+  function ready(value = state) {
+    const total = Array.isArray(root.PocketChapterEvents) ? root.PocketChapterEvents.length : 0;
+    return value.chapter.opening && (value.chapter.step >= 4 || (total > 0 && value.chapter.read.length === total));
+  }
 
   function badge() { return !state.chapter.opening || (state.chapter.invite && !state.chapter.replied) ? '1' : ''; }
 
@@ -230,7 +241,7 @@
   function feed() {
     const officialBanner = state.officialUnlocked ? `<button class="nf-official-banner" data-route="official"><span>21:15 · RV JP</span><strong>福冈首场官方照片已发布</strong><b>查看 →</b></button>` : '';
     const timeline = filter === '追星' && !query ? `<section class="nf-forum-brief"><small>公开记录 · 09.14—09.19</small><div><button data-open-post="airport-gap"><time>14</time><strong>单人机场图</strong><span>目的地未写</span></button><button data-open-post="ins-context"><time>16</time><strong>个人 INS</strong><span>专辑与练习</span></button><button data-open-post="stage-counter"><time>19</time><strong>福冈首场</strong><span>现场说法不同</span></button></div></section>` : '';
-    return wrap(`<header class="nf-pann-brand"><button class="nf-pann-menu" data-route="notebook" aria-label="打开备忘录">☰</button><div><strong>pann<span>판</span></strong><small>匿名讨论区</small></div><button class="nf-pann-search-icon" data-focus-search aria-label="搜索帖子">⌕</button><button class="nf-pann-mobile" data-nav="phonehome" aria-label="返回手机">⌂</button></header><nav class="nf-pann-topnav"><button data-filter="追星" class="${filter === '追星' ? 'active' : ''}">팬톡 <small>追星讨论</small></button><button data-filter="恋爱解答" class="${filter === '恋爱解答' ? 'active' : ''}">연애 <small>恋爱解答</small></button></nav><div class="nf-search"><span>⌕</span><form id="nf-search-form"><input id="nf-search" value="${esc(query)}" placeholder="搜索帖子或关键词" aria-label="搜索论坛"><button>搜索</button></form></div><div class="nf-pann-channel"><span>${filter === '追星' ? '팬톡 <b>福冈首场</b>' : '연애 <b>恋爱解答</b>'}</span><button data-my-posts>我的帖子 ›</button></div><div class="nf-scroll">${officialBanner}<section class="nf-pann-today"><div><h1>${filter === '追星' ? '今日热帖' : '恋爱解答'} <small>${filter === '追星' ? '오늘의 톡' : '연애 고민'}</small></h1><span>09.19 · ${storyTime()}</span></div><p>${filter === '追星' ? '正在讨论 <strong># 福冈首场的气氛</strong>' : '匿名求助 <strong># 日常相处</strong>'}</p></section><div class="nf-pann-sort"><span>${filter} · ${visiblePosts().length} 篇</span><div><button data-sort="热门" class="${sortMode === '热门' ? 'selected' : ''}">热门</button><i>│</i><button data-sort="最新" class="${sortMode === '最新' ? 'selected' : ''}">最新</button></div></div><div class="nf-feed" id="nf-feed">${visiblePosts().map(postCard).join('') || '<div class="nf-empty">没有找到帖子。</div>'}</div><div class="nf-pann-footer"><strong>pann<span>판</span></strong><p>the same blank · Chapter 01</p><small>虚构同人社区 · 不连接真实平台</small></div></div><nav class="nf-bottom"><button class="selected" data-route="feed">톡<span>论坛</span></button><button data-route="notebook">▤<span>备忘录</span></button><button data-route="ktstory">◌<span>KKT${badge() ? ' · 1' : ''}</span></button><button data-nav="phonehome">▦<span>桌面</span></button></nav>`);
+    return wrap(`<header class="nf-pann-brand"><button class="nf-pann-menu" data-route="notebook" aria-label="打开备忘录">☰</button><div><strong>pann<span>판</span></strong><small>匿名讨论区</small></div><button class="nf-pann-search-icon" data-focus-search aria-label="搜索帖子">⌕</button><button class="nf-pann-mobile" data-nav="phonehome" aria-label="返回手机">⌂</button></header><nav class="nf-pann-topnav"><button data-filter="追星" class="${filter === '追星' ? 'active' : ''}">팬톡 <small>追星讨论</small></button><button data-filter="恋爱解答" class="${filter === '恋爱解答' ? 'active' : ''}">연애 <small>恋爱解答</small></button></nav><div class="nf-search"><span>⌕</span><form id="nf-search-form"><input id="nf-search" value="${esc(query)}" placeholder="搜索帖子或关键词" aria-label="搜索论坛"><button>搜索</button></form></div><div class="nf-pann-channel"><span>${filter === '追星' ? '팬톡 <b>福冈首场</b>' : '연애 <b>恋爱解答</b>'}</span><button data-my-posts>我的帖子 ›</button></div><div class="nf-scroll">${officialBanner}<section class="nf-pann-today"><div><h1>${filter === '追星' ? '今日热帖' : '恋爱解答'} <small>${filter === '追星' ? '오늘의 톡' : '연애 고민'}</small></h1><span>09.19 · ${storyTime()}</span></div><p>${filter === '追星' ? '正在讨论 <strong># 福冈首场的气氛</strong>' : '匿名求助 <strong># 日常相处</strong>'}</p></section><div class="nf-pann-sort"><span>${filter} · ${visiblePosts().length} 篇</span><div><button data-sort="热门" class="${sortMode === '热门' ? 'selected' : ''}">热门</button><i>│</i><button data-sort="最新" class="${sortMode === '最新' ? 'selected' : ''}">最新</button></div></div>${filter === '追星' && !query ? progressCard() : ''}<div class="nf-feed" id="nf-feed">${visiblePosts().map(postCard).join('') || '<div class="nf-empty">没有找到帖子。</div>'}</div><div class="nf-pann-footer"><strong>pann<span>판</span></strong><p>the same blank · Chapter 01</p><small>虚构同人社区 · 不连接真实平台</small></div></div><nav class="nf-bottom"><button class="selected" data-route="feed">톡<span>论坛</span></button><button data-route="notebook">▤<span>备忘录</span></button><button data-route="ktstory">◌<span>KKT${badge() ? ' · 1' : ''}</span></button><button data-nav="phonehome">▦<span>桌面</span></button></nav>`);
   }
 
 
@@ -296,7 +307,7 @@
     if (!isAvailable(post)) return feed();
     const comments = post.comments.filter(c=>!c.after || state.chapter.read.length>=c.after).map(c=>({...c,time:c.time||'回复'}));
     const playerReplies = (isMain && state.forumReply ? 3 : 0) + (post.id === 'outsider-view' && state.outsiderReply ? 2 : 0);
-    return wrap(`${forumHeader()}${notice}<div class="nf-scroll"><div class="nf-pann-breadcrumb"><button data-route="feed">pann</button><span>›</span><span>${esc(post.category)}</span></div><article class="nf-thread"><div class="nf-pann-thread-label">${post.tag === '热议' ? '<span>오늘의 톡</span> 今日热帖' : `${esc(post.tag)} · ${esc(post.category)}`}</div><h1>${esc(post.title)}</h1><div class="nf-pann-byline"><span>${esc(post.author)} (匿名)</span><span>${esc(post.time)}</span></div><div class="nf-pann-thread-stats">浏览 ${esc(post.views)}<span>回复 ${comments.length + playerReplies}</span></div><div class="nf-prose">${esc(post.body)}</div>${post.airportPhotos ? airportGallery() : ''}<div class="nf-pann-post-actions"><button class="nf-bookmark ${state.saved.includes(post.id) ? 'on' : ''}" data-save-post="${post.id}"><span>${state.saved.includes(post.id) ? '★' : '☆'}</span><strong>${state.saved.includes(post.id) ? '已收藏' : '收藏帖子'}</strong></button></div></article>${post.id === 'flight-rumor' ? rumorChainMarkup() : ''}<div class="nf-comments-head"><strong>全部回复 <em>${comments.length + playerReplies}</em></strong></div>${comments.map((comment, index) => commentMarkup(comment, post, index)).join('')}${relatedMarkup}${officialReturn}<button class="nf-pann-return" data-route="feed">목록 · 返回列表</button></div><button class="nf-thread-bottom" data-route="notebook">▤ 打开备忘录</button>`);
+    return wrap(`${forumHeader()}${notice}<div class="nf-scroll"><div class="nf-pann-breadcrumb"><button data-route="feed">pann</button><span>›</span><span>${esc(post.category)}</span></div><article class="nf-thread"><div class="nf-pann-thread-label">${post.tag === '热议' ? '<span>오늘의 톡</span> 今日热帖' : `${esc(post.tag)} · ${esc(post.category)}`}</div><h1>${esc(post.title)}</h1><div class="nf-pann-byline"><span>${esc(post.author)} (匿名)</span><span>${esc(post.time)}</span></div><div class="nf-pann-thread-stats">浏览 ${esc(post.views)}<span>回复 ${comments.length + playerReplies}</span></div><div class="nf-prose">${esc(post.body)}</div>${post.airportPhotos ? airportGallery() : ''}<div class="nf-pann-post-actions"><button class="nf-bookmark ${state.saved.includes(post.id) ? 'on' : ''}" data-save-post="${post.id}"><span>${state.saved.includes(post.id) ? '★' : '☆'}</span><strong>${state.saved.includes(post.id) ? '已收藏' : '收藏帖子'}</strong></button></div></article>${post.id === 'flight-rumor' ? rumorChainMarkup() : ''}${post.id === 'coldwar' ? forumReplyMarkup() : ''}${post.id === 'outsider-view' ? outsiderReplyMarkup() : ''}<div class="nf-comments-head"><strong>全部回复 <em>${comments.length + playerReplies}</em></strong></div>${comments.map((comment, index) => commentMarkup(comment, post, index)).join('')}${relatedMarkup}${officialReturn}<button class="nf-pann-return" data-route="feed">목록 · 返回列表</button></div><button class="nf-thread-bottom" data-route="notebook">▤ 打开备忘录</button>`);
   }
 
   function airportGallery() {
@@ -316,7 +327,7 @@
     if (!state.officialSeen) { state.officialSeen = true; save(); }
     const post = DATA.officialPost;
     const aftermath = !state.read.includes('photo-reactions') ? `<div class="nf-after-photo"><small>21:18 · 论坛还在刷新</small><p>同一张合照，有人松了口气，也有人觉得问题还在。</p><button data-open-post="photo-reactions">回论坛看照片发出后的讨论 →</button></div>` : `<div class="nf-after-photo settled"><small>21:22 · 你看过了两边的说法</small><p>照片能确认两人同台与合照，不能解释台下的沉默。</p></div>`;
-    return wrap(`${head('RV JP 官方更新', 'feed')}<div class="nf-scroll nf-official-post"><div class="nf-official-account"><span>RV</span><div><strong>@${esc(post.account)}</strong><small>官方日本账号</small></div><time>21:15</time></div><p class="nf-official-copy">${esc(post.text)}</p><div class="nf-official-grid">${DATA.officialPhotos.map((photo, index) => `<figure class="${index === 0 ? 'hero' : ''}"><img src="${photo.src}" alt="${esc(photo.alt)}" loading="lazy"><figcaption>${esc(photo.caption)}</figcaption></figure>`).join('')}</div><a class="nf-source-link" href="${post.source}" target="_blank" rel="noopener noreferrer">查看官方原帖 ↗</a><aside><strong>能确认的事</strong><p>福冈首场结束，两个人共同出现在官方照片里。</p><strong>仍然不能确认的事</strong><p>另一位具体抵达日本的时间，以及台下发生过什么。</p></aside>${aftermath}${state.read.includes('photo-reactions') || state.chapterComplete ? `<button class="nf-primary" data-complete-chapter>${state.chapterComplete ? '✓ 第一章已完成' : '保存这条记录，结束第一章'}</button>` : ''}</div>`);
+    return wrap(`${head('RV JP 官方更新', 'feed')}<div class="nf-scroll nf-official-post"><div class="nf-official-account"><span>RV</span><div><strong>@${esc(post.account)}</strong><small>官方日本账号</small></div><time>21:15</time></div><p class="nf-official-copy">${esc(post.text)}</p><div class="nf-official-grid">${DATA.officialPhotos.map((photo, index) => `<figure class="${index === 0 ? 'hero' : ''}"><img src="${photo.src}" alt="${esc(photo.alt)}" loading="lazy"><figcaption>${esc(photo.caption)}</figcaption></figure>`).join('')}</div><a class="nf-source-link" href="${post.source}" target="_blank" rel="noopener noreferrer">查看官方原帖 ↗</a><aside><strong>能确认的事</strong><p>福冈首场结束，两个人共同出现在官方照片里。</p><strong>仍然不能确认的事</strong><p>另一位具体抵达日本的时间，以及台下发生过什么。</p></aside>${aftermath}${judgmentMarkup()}${state.read.includes('photo-reactions') || state.chapterComplete ? `<button class="nf-primary" data-complete-chapter>${state.chapterComplete ? '✓ 第一章已完成' : '保存这条记录，结束第一章'}</button>` : ''}</div>`);
   }
 
   function chapterEnd() { return currentchat(); }
