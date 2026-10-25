@@ -60,6 +60,8 @@
   }
   function push(n) {
     if (!n) return;
+    const dup = queue.some((q) => q.app === n.app && q.title === n.title && q.text === n.text);
+    if (dup) return;
     queue.push({ app: n.app, title: n.title, text: n.text, view: n.view || null });
     save();
     if (!timer && !showing) schedule(1200);

@@ -22,7 +22,9 @@
     { id:'N06', them:['吃东西了吗？'], await:'reply', pick:['convenience','ate','not_ate','defensive','care_back'],
       resp:{ convenience:['别只吃零食。'], ate:['别只吃零食。'], not_ate:['多少吃一点。'], defensive:['我只是问你有没有吃。'], care_back:['吃了。','你呢？'], '*':['别只吃零食。'] } },
     { id:'N07', them:['到酒店了吗？'], await:'reply', pick:['finished','better','*'],
-      resp:{ '*':['好。','早点睡。'] } }
+      resp:{ '*':['好。','早点睡。'] } },
+    { id:'N08', them:['好。','早点睡。'], await:'none',
+      push:{ app:'日历', title:'今日行程 · 11:30 大堂集合', text:'移动至大阪', view:'calendar' } }
   ];
 
 
@@ -77,6 +79,8 @@
     }
     state.lastIntent = intent;
     if (s.push) state.pendingPush = s.push;
+    const nxt = STEPS[state.i];
+    if (nxt && nxt.push) state.pendingPush = nxt.push;
     state.i = Math.min(STEPS.length - 1, state.i + 1);
     save();
     return true;

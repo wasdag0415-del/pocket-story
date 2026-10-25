@@ -388,7 +388,7 @@
       if(!text)return;
       const previous=state.chapter.step||0;
       root.PocketFlow&&root.PocketFlow.reply(text);
-      setTimeout(()=>{root.flowPush&&root.flowPush();},400);
+      root.flowPush&&root.flowPush();
       const _flowOn = !!(root.PocketFlow && root.PocketFlow.current && root.PocketFlow.current().await === 'reply');
       if (!_flowOn) {
         state.chapter.step=Math.min(4,previous+1);
