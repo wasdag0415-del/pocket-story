@@ -1,5 +1,5 @@
 /* 提醒事项 & 备忘录 参考图对齐 */
-.rn{background:#fff;min-height:100%;display:flex;flex-direction:column}
+.rn{background:#fff;position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden}
 .rn .nav{display:flex;align-items:center;justify-content:space-between;padding:6px 16px 0;background:#fff;min-height:44px}
 .rn .nav .back{border:0;background:transparent;color:#0a84ff;font-size:17px;padding:4px 0}
 .rn .nav .act{border:0;background:transparent;color:#0a84ff;font-size:20px}
@@ -16,7 +16,7 @@
 .rn .rbody.done strong{color:#b0b0b0;text-decoration:line-through}
 .rn .rbody.done em{color:#c7c7cc}
 /* 备忘录 */
-.nt{background:#f2f2f7;min-height:100%;display:flex;flex-direction:column;position:relative;padding-bottom:70px}
+.nt{background:#f2f2f7;position:absolute;inset:0;display:flex;flex-direction:column;padding-bottom:74px;overflow:hidden}
 .nt .nav{display:flex;align-items:center;justify-content:space-between;padding:6px 16px 0;background:#f2f2f7}
 .nt .nav .back{border:0;background:transparent;color:#f5a623;font-size:17px}
 .nt .nav .act{border:0;background:transparent;color:#f5a623;font-size:20px}
@@ -31,3 +31,7 @@
 .nt .thumb{width:52px;height:52px;border-radius:8px;background:#dbe6d3;flex-shrink:0}
 .nt .bottom{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 16px 20px;background:rgba(249,249,249,.94);border-top:.5px solid #dcdce1;color:#8e8e93;font-size:14px}
 .nt .bottom .new{position:absolute;right:16px;border:0;background:transparent;color:#f5a623;font-size:22px}
+
+.nt .bottom{position:sticky;bottom:0;margin-top:auto;z-index:5;box-shadow:0 -6px 16px rgba(0,0,0,.04)}
+
+.nt .ios-app-scroll,.rn .ios-app-scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:20px}
