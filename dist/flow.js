@@ -8,18 +8,20 @@
 
   // 开场：锁屏 → KKT 两轮 → 日历推送 → 信息推送 → 确认主人
   const STEPS = [
-    { id:'N02', await:'reply', them:['去按了吗？'],
-      pick:['going','finished','not_done','avoid'],
-      resp:{ going:['嗯，结束了告诉我。'], finished:['嗯，结束了告诉我。'], not_done:['不是说结束以后就去吗？','别又拖着。'], avoid:['问你去按了吗。'], '*':['问你去按了吗。'] } },
-    { id:'N06', them:['吃东西了吗？'], await:'reply', pick:['convenience','ate','not_ate','defensive','care_back'],
-      resp:{ convenience:['别只吃零食。'], ate:['别只吃零食。'], not_ate:['多少吃一点。'], defensive:['我只是问你有没有吃。'], care_back:['吃了。','你呢？'], '*':['别只吃零食。'] } },
-    { id:'N07', them:['别只吃零食。'], await:'reply', pick:['*'],
-      resp:{ '*':['到酒店了吗？'] } },
-    { id:'N08', them:['到酒店了吗？'], await:'reply', pick:['finished','*'],
-      resp:{ '*':['好。','早点睡。'] } },
-    { id:'N09', them:['好。','早点睡。'], await:'none',
-      push:{ app:'日历', title:'今日行程 · 11:30 大堂集合', text:'移动至大阪', view:'calendar' } }
+    { id:'N02_KKT_OPENED', await:'reply', them:['去按了吗？'],
+      pick:['finished','going','not_done','avoid'],
+      jump:{ finished:2 },
+      resp:{
+        finished:[],
+        going:['嗯，结束了告诉我。'],
+        not_done:['不是说结束以后就去吗？','别又拖着。'],
+        avoid:['问你去按了吗。'],
+        '*':['？','去按摩了吗？']
+      } },
+    { id:'N04_WAIT_MASSAGE_FINISH', await:'none', them:[] },
+    { id:'N05_AFTER_MASSAGE', await:'none', them:[] }
   ];
+
 
 
 
@@ -75,7 +77,8 @@
     if (s.push) state.pendingPush = s.push;
     const nxt = STEPS[state.i];
     if (nxt && nxt.push) state.pendingPush = nxt.push;
-    state.i = Math.min(STEPS.length - 1, state.i + 1);
+    const _jump = s.jump && s.jump[intent];
+    state.i = Number.isInteger(_jump) ? _jump : Math.min(STEPS.length - 1, state.i + 1);
     save();
     return true;
   }
