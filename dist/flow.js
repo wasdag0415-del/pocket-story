@@ -76,6 +76,7 @@
       if (lines) state.dyn[state.i + 1] = lines;
     }
     state.lastIntent = intent;
+    if (s.push) state.pendingPush = s.push;
     state.i = Math.min(STEPS.length - 1, state.i + 1);
     save();
     return true;
@@ -102,6 +103,8 @@
   }
   function markSeen(view) { if (targetView() === view) { state.seenIndex = state.i; save(); } }
   function badgeFor(view) { return targetView() === view && state.seenIndex !== state.i; }
+  function pendingPush() { return state.pendingPush || null; }
+  function clearPending() { state.pendingPush = null; save(); }
   function current() { return at(); }
   function progress() {
     return { i: state.i, step: at().id, synced: state.synced, total: STEPS.length };
@@ -110,7 +113,7 @@
   function getState() { return JSON.parse(JSON.stringify(state)); }
 
   root.PocketFlow = {
-    KEY, STEPS, chatLines, reply, openApp, markSeen, badgeFor, current, targetView, progress, reset, getState, normalize
+    KEY, STEPS, chatLines, reply, openApp, markSeen, badgeFor, current, pendingPush, clearPending, targetView, progress, reset, getState, normalize
   };
   if (typeof module !== 'undefined') module.exports = root.PocketFlow;
 })(typeof window === 'undefined' ? globalThis : window);
