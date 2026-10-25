@@ -10,22 +10,15 @@
   const STEPS = [
     { id:'N02_KKT_OPENED', await:'reply', them:['去按了吗？'],
       pick:['finished','going','not_done','avoid'],
-      jump:{ finished:2 },
-      resp:{
-        finished:[],
-        going:['嗯，结束了告诉我。'],
-        not_done:['不是说结束以后就去吗？','别又拖着。'],
-        avoid:['问你去按了吗。'],
-        '*':['？','去按摩了吗？']
-      } },
-    { id:'N04_WAIT_MASSAGE_FINISH', await:'none', them:[] },
+      exit:{ finished:1 },
+      resp:{ finished:[], going:['嗯，结束了告诉我。'], not_done:['不是说结束以后就去吗？','别又拖着。'], avoid:['问你去按了吗。'], '*':['？','去按摩了吗？'] } },
     { id:'N05_AFTER_MASSAGE', await:'none', them:[] }
   ];
 
 
 
 
-  const fresh = () => ({ version: 1, i: 0, replies: [], synced: false, seenIndex: -1, dyn: {} });
+  const fresh = () => ({ version: 1, i: 0, replies: [], log: [], synced: false, seenIndex: -1, dyn: {} });
   function normalize(v) {
     const n = fresh();
     if (!v || v.version !== 1) return n;
@@ -34,6 +27,7 @@
     n.synced = v.synced === true;
     n.seenIndex = Number.isInteger(v.seenIndex) ? v.seenIndex : -1;
     n.dyn = v.dyn && typeof v.dyn === 'object' ? v.dyn : {};
+    n.log = Array.isArray(v.log) ? v.log.filter((m) => m && typeof m.text === 'string').slice(-80) : [];
     return n;
   }
 
@@ -46,17 +40,10 @@
   // 当前应显示的对话（她们的话 + 玩家已回复）
   function chatLines() {
     const out = [];
-    for (let k = 0; k <= state.i && k < STEPS.length; k += 1) {
-      const s = STEPS[k];
-      if (k === 0 && s.pre) {
-        s.pre.forEach((m) => {
-          if (!m.who) return; // 时间标记不当作聊天气泡
-          out.push({ role: m.who === 's' ? 'me' : 'them', text: m.t });
-        });
-      }
-      (state.dyn[k] || s.them || []).forEach((t) => out.push({ role: 'them', text: t }));
-      if (k < state.i && state.replies[k]) out.push({ role: 'me', text: state.replies[k] });
+    for (let k = 0; k < STEPS.length && k <= state.i; k += 1) {
+      (STEPS[k].them || []).forEach((t) => out.push({ role: 'them', text: t }));
     }
+    (state.log || []).forEach((m) => out.push({ role: m.role === 'me' ? 'me' : 'them', text: m.text }));
     return out;
   }
 
@@ -64,21 +51,22 @@
     const s = at();
     if (s.await !== 'reply') return false;
     const clean = String(text || '').trim().slice(0, 200);
-    state.replies[state.i] = clean;
+    if (!clean) return false;
     let intent = '*';
     const C = root.PocketIntent;
     if (C && s.pick && s.resp) {
       const tags = C.classify(clean).tags || [];
       intent = s.pick.find((k) => tags.includes(k)) || '*';
-      const lines = s.resp[intent] || s.resp['*'];
-      if (lines) state.dyn[state.i + 1] = lines;
     }
+    state.log = state.log || [];
+    state.log.push({ role: 'me', text: clean });
+    const lines = s.resp ? (s.resp[intent] || s.resp['*'] || []) : [];
+    lines.forEach((t) => state.log.push({ role: 'them', text: t }));
+    state.replies[state.i] = clean;
     state.lastIntent = intent;
     if (s.push) state.pendingPush = s.push;
-    const nxt = STEPS[state.i];
-    if (nxt && nxt.push) state.pendingPush = nxt.push;
-    const _jump = s.jump && s.jump[intent];
-    state.i = Number.isInteger(_jump) ? _jump : Math.min(STEPS.length - 1, state.i + 1);
+    const target = s.exit && s.exit[intent];
+    if (Number.isInteger(target)) state.i = Math.min(STEPS.length - 1, target);
     save();
     return true;
   }
