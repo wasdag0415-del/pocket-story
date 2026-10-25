@@ -54,8 +54,8 @@
       const s = STEPS[k];
       if (k === 0 && s.pre) {
         s.pre.forEach((m) => {
-          if (m.t) out.push({ role: 'day', text: m.t });
-          else out.push({ role: m.who === 's' ? 'me' : 'them', text: m.t });
+          if (!m.who) return; // 时间标记不当作聊天气泡
+          out.push({ role: m.who === 's' ? 'me' : 'them', text: m.t });
         });
       }
       (state.dyn[k] || s.them || []).forEach((t) => out.push({ role: 'them', text: t }));

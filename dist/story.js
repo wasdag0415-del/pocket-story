@@ -179,7 +179,7 @@
     const hints=['回复“去按了吗？”','输入消息','回复“按完好点了吗？”','回复散步邀请','输入消息'];
     const composer = `<form id="pc-story-composer" class="pc-composer"><input id="pc-story-input" maxlength="240" autocomplete="off" placeholder="${hints[step]||'输入消息'}" aria-label="KakaoTalk 消息" required><button aria-label="发送消息">↑</button></form>`;
     
-    return wrap(`<header class="nf-kkt-chat-head"><button data-route="ktstory" aria-label="返回">‹</button><strong>组长老师</strong><span>⌕　☰</span></header><div class="nf-scroll nf-chat-scroll">${bubbles([{date:'9月19日 · 首场结束以后',who:'组长老师',lines}])}</div>${composer}`,'nf-story-chat');
+    return wrap(`<header class="nf-kkt-chat-head"><button data-route="ktstory" aria-label="返回">‹</button><strong>组长老师</strong><span>⌕　☰</span></header><div class="nf-scroll nf-chat-scroll">${bubbles([{date:'9月23日 · 福冈最后一场结束后',who:'组长老师',lines}])}</div>${composer}`,'nf-story-chat');
   }
   function sharedphotos() {
     if(!state.chapter.opening) return currentchat();
