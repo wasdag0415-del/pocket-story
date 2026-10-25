@@ -1,0 +1,33 @@
+/* 提醒事项 & 备忘录 参考图对齐 */
+.rn{background:#fff;min-height:100%;display:flex;flex-direction:column}
+.rn .nav{display:flex;align-items:center;justify-content:space-between;padding:6px 16px 0;background:#fff;min-height:44px}
+.rn .nav .back{border:0;background:transparent;color:#0a84ff;font-size:17px;padding:4px 0}
+.rn .nav .act{border:0;background:transparent;color:#0a84ff;font-size:20px}
+.rn .big{font-size:34px;font-weight:800;margin:6px 16px 14px;letter-spacing:-.5px;color:#111}
+.rn .sec{font-size:22px;font-weight:800;margin:18px 16px 6px;letter-spacing:-.3px}
+.rn .sec.orange{color:#f5a623}.rn .sec.blue{color:#0a84ff}
+.rn .row{display:flex;align-items:flex-start;gap:12px;width:100%;padding:10px 16px;border:0;border-bottom:1px solid #ededed;background:#fff;text-align:left}
+.rn .row:active{background:#f7f7f7}
+.rn .circle{width:24px;height:24px;border-radius:50%;border:2px solid #d1d1d6;flex-shrink:0;margin-top:2px;display:grid;place-items:center;font-size:13px;color:#fff}
+.rn .circle.on{background:#0a84ff;border-color:#0a84ff}
+.rn .circle.dashed{border-style:dashed}
+.rn .rbody strong{display:block;font-size:17px;font-weight:500;color:#111}
+.rn .rbody em{display:block;font-style:normal;font-size:15px;color:#f5a623;margin-top:2px}
+.rn .rbody.done strong{color:#b0b0b0;text-decoration:line-through}
+.rn .rbody.done em{color:#c7c7cc}
+/* 备忘录 */
+.nt{background:#f2f2f7;min-height:100%;display:flex;flex-direction:column;position:relative;padding-bottom:70px}
+.nt .nav{display:flex;align-items:center;justify-content:space-between;padding:6px 16px 0;background:#f2f2f7}
+.nt .nav .back{border:0;background:transparent;color:#f5a623;font-size:17px}
+.nt .nav .act{border:0;background:transparent;color:#f5a623;font-size:20px}
+.nt .big{font-size:32px;font-weight:800;margin:6px 16px 12px;letter-spacing:-.5px;color:#111}
+.nt .search{display:flex;align-items:center;gap:8px;margin:0 16px 6px;padding:9px 12px;border-radius:11px;background:#e3e3e8;color:#8e8e93;font-size:16px}
+.nt .sec{font-size:21px;font-weight:800;margin:16px 16px 8px;color:#111}
+.nt .card{display:flex;align-items:center;gap:10px;width:calc(100% - 32px);margin:0 16px 10px;padding:12px 14px;border:0;border-radius:14px;background:#fff;text-align:left}
+.nt .card .cbody{flex:1;min-width:0}
+.nt .card strong{display:block;font-size:17px;font-weight:600;color:#111;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nt .card span{display:block;font-size:14px;color:#8e8e93;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nt .card small{display:flex;align-items:center;gap:4px;font-size:13px;color:#8e8e93;margin-top:4px}
+.nt .thumb{width:52px;height:52px;border-radius:8px;background:#dbe6d3;flex-shrink:0}
+.nt .bottom{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 16px 20px;background:rgba(249,249,249,.94);border-top:.5px solid #dcdce1;color:#8e8e93;font-size:14px}
+.nt .bottom .new{position:absolute;right:16px;border:0;background:transparent;color:#f5a623;font-size:22px}

@@ -409,25 +409,27 @@ function toggleFavorite(id){const m=(state.messages[state.active]||[]).find(m=>m
 function flowPush(){const F=window.PocketFlow;if(!F)return;const st=F.current();const p=(F.pendingPush&&F.pendingPush())||(st&&(st.push||st.pushAfter));if(!p)return;if(window.PocketNotify){window.PocketNotify.push(p);if(F.clearPending)F.clearPending();return;}const n=$('#notification');if(!n)return;n.innerHTML=`<small>${esc(p.app)}</small><strong>${esc(p.title)}</strong>${esc(p.text)}`;n.hidden=false;n.onclick=()=>{n.hidden=true;};}
 function renderMainNotes(){
   const KEY='pocket-notes-v1';
-  const seed=[['日本想去的地方_v1','展览\n唱片店\n安静一点的咖啡店\n可以拍外景的位置\n雨天备用地点'],['两个人挑唱片','各自替对方选一张\n不提前说理由\n回去以后交换听\n不要拍太久\n她可能不想一直说话'],['陶艺','左边：蓝色\n右边：白色\n白色釉再问老师\n杯口还要修\n两个都不要写名字'],['无标题','我不是一定要现在决定。\n只是以为她也在期待。'],['未发送','我知道你只是累。\n我也不知道为什么会变成这样。'],['兵库结束以后','大阪集合 11:40\n热敷贴\n相机充电\n橘子街营业时间\n不一定去']];
-  let list; try{ list=JSON.parse(localStorage.getItem(KEY)); }catch{}
-  if(!Array.isArray(list)||!list.length){ list=seed.map(([t,b])=>({id:'n'+Math.random().toString(36).slice(2,7),title:t,body:b})); try{localStorage.setItem(KEY,JSON.stringify(list));}catch{} }
+  const seed=[['日本想去的地方_v1','过去 30 天','展览 / 唱片店 / 安静一点的咖啡店'],['两个人挑唱片','九月','各自替对方选一张，不提前说理由'],['陶艺','九月','左边蓝色，右边白色，两个都不要写名字'],['无标题','九月','我不是一定要现在决定。'],['未发送','八月','我知道你只是累。'],['兵库结束以后','八月','大阪集合 11:40，热敷贴，不一定去']];
+  let list;try{list=JSON.parse(localStorage.getItem(KEY));}catch{}
+  if(!Array.isArray(list)||!list.length){list=seed.map(([t,d,b])=>({id:'n'+Math.random().toString(36).slice(2,7),title:t,group:d,body:b}));try{localStorage.setItem(KEY,JSON.stringify(list));}catch{}}
   const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(list));}catch{}};
   const listView=()=>{
-    screen.innerHTML=`<div class="ios26"><div class="nav"><button class="back" data-home>‹</button><h1>备忘录</h1><button class="act" data-new>＋</button></div><div class="group">${list.map(n=>`<button class="cell" data-open="${n.id}"><span class="t">${esc(n.title)}<small>${esc((n.body||'').split('\n')[0].slice(0,22))}</small></span><span class="chev">›</span></button>`).join('')}</div><p class="ios-local-label">只保存在本机</p></div>`;
+    const groups=[...new Set(list.map(n=>n.group||'九月'))];
+    screen.innerHTML=`<div class="nt"><div class="nav"><button class="back" data-home>‹ 文件夹</button><button class="act">···</button></div><h1 class="big">iCloud 全部备忘录</h1><div class="search">⌕ 搜索</div>${groups.map(g=>`<h2 class="sec">${esc(g)}</h2>${list.filter(n=>(n.group||'九月')===g).map(n=>`<button class="card" data-open="${n.id}"><span class="cbody"><strong>${esc(n.title)}</strong><span>${esc((n.body||'').split('\n')[0].slice(0,24))}</span><small>▤ 备忘录</small></span></button>`).join('')}`).join('')}<div class="bottom"><span>${list.length}个备忘录</span><button class="new" data-new>✎</button></div></div>`;
     bindShared();
-    const h=screen.querySelector('[data-home]'); if(h)h.onclick=()=>render('phonehome');
-    const nb=screen.querySelector('[data-new]'); if(nb)nb.onclick=()=>{const n={id:'n'+Math.random().toString(36).slice(2,7),title:'新备忘录',body:''};list.unshift(n);save();editView(n);};
-    screen.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>editView(list.find(x=>x.id===b.dataset.open)));
+    const h=screen.querySelector('[data-home]');if(h)h.onclick=()=>render('phonehome');
+    screen.querySelector('[data-new]').onclick=()=>{const n={id:'n'+Math.random().toString(36).slice(2,7),title:'新备忘录',group:'九月',body:''};list.unshift(n);save();edit(n);};
+    screen.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>edit(list.find(x=>x.id===b.dataset.open)));
   };
-  const editView=(n)=>{
-    screen.innerHTML=`<div class="ios26"><div class="nav"><button class="back" data-back>‹ 备忘录</button><h1></h1><button class="act" data-save>完成</button></div><div style="padding:14px 16px"><input id="nt" value="${esc(n.title)}" style="width:100%;border:0;background:transparent;font-size:20px;font-weight:600;outline:0;margin-bottom:10px"><textarea id="nb" style="width:100%;min-height:320px;border:0;background:transparent;font-size:14px;line-height:1.9;outline:0;resize:none">${esc(n.body)}</textarea></div></div>`;
+  const edit=(n)=>{
+    screen.innerHTML=`<div class="rn"><div class="nav"><button class="back" data-back>‹ 备忘录</button><button class="act" data-save>完成</button></div><div style="padding:12px 16px"><input id="nt" value="${esc(n.title)}" style="width:100%;border:0;background:transparent;font-size:22px;font-weight:700;outline:0;margin-bottom:8px"><textarea id="nb" style="width:100%;min-height:340px;border:0;background:transparent;font-size:15px;line-height:1.8;outline:0;resize:none">${esc(n.body)}</textarea></div></div>`;
     bindShared();
     screen.querySelector('[data-back]').onclick=listView;
     screen.querySelector('[data-save]').onclick=()=>{n.title=screen.querySelector('#nt').value.trim()||'新备忘录';n.body=screen.querySelector('#nb').value;save();listView();};
   };
   listView();
 }
+
 function renderWallet(){
   const TX=[{id:'w1',merchant:'7-ELEVEN FUKUOKA',amount:'¥1,180',time:'9月23日 23:41',card:'•••• 0329',day:'今天'},{id:'w2',merchant:'FamilyMart 神户',amount:'¥640',time:'9月22日 21:10',card:'•••• 0329',day:'昨天'},{id:'w3',merchant:'STARBUCKS 博多',amount:'¥780',time:'9月19日 15:22',card:'•••• 0329',day:'9月19日'}];
   const list=()=>{screen.innerHTML=`<div class="ios-native-app">${iosBack('Apple 钱包')}<div class="ios-app-scroll" style="padding:14px"><div style="background:linear-gradient(135deg,#1c1c1e,#3a3a3c);border-radius:16px;padding:18px;color:#fff;margin-bottom:16px"><small style="opacity:.7;font-size:12px">卡片 ·•••• 0329</small><div style="font-size:26px;font-weight:700;margin-top:6px">¥2,600</div><small style="opacity:.6;font-size:11px">近三日消费</small></div>${TX.map(t=>`<button data-tx="${t.id}" style="display:flex;justify-content:space-between;align-items:center;width:100%;padding:13px 4px;border:0;border-bottom:1px solid #f0f0f0;background:transparent;text-align:left"><span><strong style="display:block;font-size:14px">${t.merchant}</strong><small style="color:#8e8e93;font-size:12px">${t.time}</small></span><span style="font-size:15px;font-weight:600">${t.amount}</span></button>`).join('')}<p style="color:#8e8e93;font-size:12px;margin-top:14px;text-align:center">同人虚构 · 不展示商品明细</p></div></div>`;bindShared();screen.querySelectorAll('[data-tx]').forEach(b=>b.onclick=()=>{const t=TX.find(x=>x.id===b.dataset.tx);screen.querySelector('#screen');detail(t);});};
@@ -436,16 +438,19 @@ function renderWallet(){
 }
 function renderReminders(){
   const KEY='pocket-reminders-v1';
-  const items=[['stage','舞台检查','14:40 · 还有45分钟'],['mc','第二段MC位置确认','舞台检查时完成'],['ending','ending站位','往右调整一点'],['wardrobe','换衣服动线','再走一次']];
+  const groups=[['提醒','#f5a623',[['stage','!!! 舞台检查','14:40 · 还有45分钟'],['mc','第二段MC位置确认','舞台检查时完成'],['ending','ending站位','往右调整一点'],['wardrobe','换衣服动线','再走一次']]],['演出准备','#0a84ff',[['water','带水','后台放一瓶'],['coat','外套放后台','别忘在外面']]]];
   let done={};try{done=JSON.parse(localStorage.getItem(KEY))||{};}catch{}
-  const saveDone=()=>{try{localStorage.setItem(KEY,JSON.stringify(done));}catch{}};
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(done));}catch{}};
   const paint=()=>{
-    screen.innerHTML=`<div class="ios-native-app">${iosBack('提醒事项')}<div class="ios-app-scroll" style="padding:16px"><h2 style="margin:0 0 4px;font-size:20px">大阪 Day 1</h2><p style="color:#8e8e93;font-size:12px;margin:0 0 14px">${items.filter(i=>done[i[0]]).length}/${items.length} 已完成</p>${items.map(([id,t,note])=>`<button data-rem="${id}" style="display:flex;gap:10px;align-items:flex-start;padding:12px 0;border:0;border-bottom:1px solid #f0f0f0;background:transparent;width:100%;text-align:left"><span style="width:21px;height:21px;border:2px solid ${done[id]?'#34c759':'#c7c7cc'};border-radius:50%;flex-shrink:0;margin-top:1px;display:grid;place-items:center;color:#fff;background:${done[id]?'#34c759':'transparent'};font-size:12px">${done[id]?'✓':''}</span><span><strong style="font-size:14px;${done[id]?'color:#b0b0b0;text-decoration:line-through':''}">${t}</strong><small style="display:block;color:#8e8e93">${note}</small></span></button>`).join('')}<p style="color:#8e8e93;font-size:12px;margin-top:14px">点圆圈可以勾选 · 同人虚构</p></div></div>`;
+    const total=groups.reduce((n,g)=>n+g[2].length,0);
+    screen.innerHTML=`<div class="rn"><div class="nav"><button class="back" data-home>‹ 列表</button><button class="act">···</button></div><h1 class="big">全部</h1>${groups.map(([name,color,items])=>`<h2 class="sec" style="color:${color}">${name}</h2>${items.map(([id,t,sub])=>`<div class="row"><button data-rem="${id}" class="circle ${done[id]?'on':''}" style="border:2px solid ${done[id]?'#0a84ff':'#d1d1d6'}">${done[id]?'✓':''}</button><span class="rbody ${done[id]?'done':''}"><strong>${esc(t)}</strong><em>${esc(sub)}</em></span></div>`).join('')}<div class="row"><span class="circle dashed"></span></div>`).join('')}<p class="ios-local-label">已完成 ${Object.values(done).filter(Boolean).length}/${total} · 同人虚构</p></div>`;
     bindShared();
-    screen.querySelectorAll('[data-rem]').forEach(b=>b.onclick=()=>{const id=b.dataset.rem;done[id]=!done[id];saveDone();paint();});
+    const h=screen.querySelector('[data-home]');if(h)h.onclick=()=>render('phonehome');
+    screen.querySelectorAll('[data-rem]').forEach(b=>b.onclick=()=>{const id=b.dataset.rem;done[id]=!done[id];save();paint();});
   };
   paint();
 }
+
 function renderMap(){
   const P=[{id:'m1',name:'橘子街',from:'伴舞推荐',eta:'从酒店出发约24分钟',near:['小店','咖啡店','餐厅','海边步行路线'],saved:true},{id:'m2',name:'酒店附近夜间药局',from:'自己搜索',eta:'步行约6分钟',near:['肩颈贴','营业至23:00'],saved:true}];
   const list=()=>{screen.innerHTML=`<div class="ios-native-app">${iosBack('地图')}<div class="ios-app-scroll" style="padding:16px"><div style="background:#f2f2f7;border-radius:10px;padding:9px 12px;color:#8e8e93;font-size:13px;margin-bottom:14px">⌕ 搜索地点</div>${P.map(p=>`<button data-place="${p.id}" style="display:flex;justify-content:space-between;align-items:center;width:100%;padding:13px 4px;border:0;border-bottom:1px solid #f0f0f0;background:transparent;text-align:left"><span><strong style="display:block;font-size:15px">${p.name}</strong><small style="color:#8e8e93;font-size:12px">${p.from} · ${p.eta}</small></span><b style="color:#c7c7cc">›</b></button>`).join('')}<p style="color:#8e8e93;font-size:12px;margin-top:14px;text-align:center">收藏地点不代表实际到访</p></div></div>`;bindShared();screen.querySelectorAll('[data-place]').forEach(b=>b.onclick=()=>detail(P.find(x=>x.id===b.dataset.place)));};
@@ -657,5 +662,5 @@ function compressImage(file,max=800){return new Promise((resolve,reject)=>{if(!f
 $('#avatar-upload').onchange=async e=>{const file=e.target.files[0],p=profile();if(!file)return;try{const old=p.avatar;p.avatar=await compressImage(file,300);if(persist()){toast('头像已更新');render('profile');}else p.avatar=old;}catch(err){toast(err.message);}e.target.value='';};
 $('#photo-upload').onchange=async e=>{const files=[...e.target.files];for(const f of files){if(state.photos.length>=20){toast('相册最多保存 20 张图片。');break;}try{const src=await compressImage(f,800);state.photos.push({id:uid(),name:f.name,src});if(!persist()){state.photos.pop();break;}}catch(err){toast(err.message);}}e.target.value='';render('album');};
 $('#home').onclick=()=>render('phonehome');$('#enter-chat').onclick=()=>render('lock');$('#customize').onclick=()=>{customApp=true;render('profile');};$('.wordmark').onclick=e=>{e.preventDefault();render('phonehome');};$('#about').onclick=()=>showModal('<h3>Pocket Story · the same blank</h3><p>第一章从福冈首场结束后的同担消息开始。玩家通过论坛、公开 INS、机场图和官方更新整理时间线，从一部被捡到的手机读取涩琪留下的线索。</p><p>真实公开素材会标注来源；论坛内容、聊天与私人关系推测属于同人虚构。第一章不会开放主人公私聊，第二章和十月过渡内容也暂未开放。</p><p>LYSN 自由聊天、相册上传、便签等原有功能保留；进度和聊天只保存在当前浏览器，不连接真实账号。</p>');$('#close-modal').onclick=()=>$('#modal').close();$('#modal').onclick=e=>{if(e.target===$('#modal'))$('#modal').close();};
-function tick(){const now=JapanStory.storyTime();$('#status-time').textContent=now;const clock=$('#home-clock');if(clock)clock.textContent=now;}render('lock');tick();setInterval(tick,15000);try{if(location.hash==='#dev-kkt'){render('ktstory');}if(location.hash==='#dev-chat'){render('ktstory');const _b=document.querySelector('[data-route=\"currentchat\"]');if(_b)_b.click();}}catch(e){}
+function tick(){const now=JapanStory.storyTime();$('#status-time').textContent=now;const clock=$('#home-clock');if(clock)clock.textContent=now;}render('lock');tick();setInterval(tick,15000);try{if(location.hash==='#dev-kkt'){render('ktstory');}if(location.hash==='#dev-rem'){render('reminders');}if(location.hash==='#dev-notes'){render('notebook');}if(location.hash==='#dev-chat'){render('ktstory');const _b=document.querySelector('[data-route=\"currentchat\"]');if(_b)_b.click();}}catch(e){}
 }
