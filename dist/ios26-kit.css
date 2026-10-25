@@ -1,0 +1,29 @@
+/* iOS 26 / iPhone 17 交互基线组件 */
+:root{--ios-bg:#f2f2f7;--ios-card:#fff;--ios-label:#161616;--ios-2:#8e8e93;--ios-3:#c7c7cc;--ios-blue:#0a84ff;--ios-sep:rgba(60,60,67,.12);--ios-radius:14px;--ios-nav:rgba(249,249,249,.82)}
+.ios26{background:var(--ios-bg);color:var(--ios-label);font:14px -apple-system,"PingFang SC",sans-serif;-webkit-font-smoothing:antialiased}
+.ios26 .nav{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:8px;min-height:50px;padding:6px 12px;background:var(--ios-nav);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid var(--ios-sep)}
+.ios26 .nav .back{border:0;background:transparent;color:var(--ios-blue);font-size:15px;padding:4px 2px}
+.ios26 .nav h1{flex:1;margin:0;font-size:17px;font-weight:600;text-align:center}
+.ios26 .nav .act{border:0;background:transparent;color:var(--ios-blue);font-size:15px;min-width:28px}
+.ios26 .group{background:var(--ios-card);border-radius:var(--ios-radius);margin:12px 16px;overflow:hidden}
+.ios26 .cell{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border:0;border-bottom:.5px solid var(--ios-sep);background:transparent;text-align:left;font-size:15px;color:var(--ios-label)}
+.ios26 .cell:last-child{border-bottom:0}
+.ios26 .cell:active{background:rgba(0,0,0,.05)}
+.ios26 .cell .t{flex:1;min-width:0}
+.ios26 .cell small{display:block;color:var(--ios-2);font-size:12px;margin-top:2px}
+.ios26 .cell .chev{color:var(--ios-3);font-size:16px}
+.ios26 .search{display:flex;align-items:center;gap:6px;margin:8px 16px;padding:8px 10px;border-radius:10px;background:rgba(118,118,128,.12);color:var(--ios-2);font-size:14px}
+.ios26 .search input{flex:1;border:0;background:transparent;outline:0;font-size:14px;color:var(--ios-label)}
+.ios26 .seg{display:flex;gap:2px;margin:8px 16px;padding:2px;border-radius:9px;background:rgba(118,118,128,.12)}
+.ios26 .seg button{flex:1;padding:6px 0;border:0;border-radius:7px;background:transparent;font-size:13px;color:var(--ios-label)}
+.ios26 .seg button.on{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:600}
+.ios26 .sheet{position:absolute;left:0;right:0;bottom:0;background:rgba(249,249,249,.96);backdrop-filter:blur(20px);border-radius:16px 16px 0 0;padding:14px 16px 22px;box-shadow:0 -8px 30px rgba(0,0,0,.16);z-index:40}
+.ios26 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:2px}
+.ios26 .grid button{position:relative;aspect-ratio:1;border:0;padding:0;background:#e9edf3;overflow:hidden}
+.ios26 .grid span{position:absolute;left:4px;bottom:4px;font-size:9px;color:#5a6570;background:rgba(255,255,255,.7);border-radius:4px;padding:1px 4px}
+.ios26 .viewer{position:absolute;inset:0;background:#000;z-index:50;display:flex;flex-direction:column}
+.ios26 .viewer .top{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;color:#fff;font-size:13px}
+.ios26 .viewer .top button{border:0;background:transparent;color:#fff;font-size:16px}
+.ios26 .viewer .stage{flex:1;display:grid;place-items:center;color:#8e8e93;font-size:13px}
+.ios26 .viewer .foot{display:flex;justify-content:space-between;padding:12px 24px 26px;color:#fff}
+.ios26 .viewer .foot button{border:0;background:rgba(255,255,255,.14);color:#fff;border-radius:50%;width:44px;height:44px;font-size:18px}

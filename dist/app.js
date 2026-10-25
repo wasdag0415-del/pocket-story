@@ -505,24 +505,29 @@ function renderSettings(){
 }
 function renderNotes(){screen.innerHTML=`<div class="page">${head('便签','存下那些还没来得及说的话',`<button class="icon-button" id="add-note" aria-label="新建便签">＋</button>`)}<div class="page-body"><div class="section-label">THINGS I WANT TO TELL YOU</div>${state.notes.length?state.notes.map(n=>`<button class="note-card" data-note="${n.id}"><h3>${esc(n.title)}</h3><p>${esc(n.body.slice(0,120))}</p><small>${new Date(n.at).toLocaleDateString('zh-CN')} · 点击编辑</small></button>`).join(''):'<div class="empty-note"><span class="empty-icon">✎</span>先记下来，等你想说的时候再说。</div>'}</div></div>`;$('#add-note').onclick=()=>editNote();screen.querySelectorAll('[data-note]').forEach(b=>b.onclick=()=>editNote(b.dataset.note));}
 function editNote(id){const n=state.notes.find(n=>n.id===id);showModal(`<h3>${n?'编辑便签':'新建便签'}</h3><form id="note-form"><label class="field"><span>标题</span><input name="title" maxlength="60" value="${esc(n?.title||'')}" required placeholder="今天想记下什么"></label><label class="field"><span>内容</span><textarea name="body" maxlength="4000" rows="7" placeholder="慢慢写，不用急。">${esc(n?.body||'')}</textarea></label><button class="primary wide">保存便签</button></form>${n?'<button class="danger" id="delete-note">删除这条便签</button>':''}`);$('#note-form').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),title=String(f.get('title')).trim();if(!title)return;const item={id:id||uid(),title,body:String(f.get('body')).trim(),at:Date.now()};state.notes=n?state.notes.map(x=>x.id===id?item:x):[item,...state.notes];persist();$('#modal').close();render('notes');toast('已保存便签');};if(n)$('#delete-note').onclick=()=>{state.notes=state.notes.filter(x=>x.id!==id);persist();$('#modal').close();render('notes');};}
-function renderAlbum(){screen.innerHTML=`<div class="page">${head('相册','保存的公开图片会成为剧情记录',`<button class="icon-button" id="upload-photo" aria-label="添加相册图片">＋</button>`)}<div class="page-body">${JapanStory.albumCards()}<div class="section-label">九月 · 日常碎片</div><div class="gallery">
-<button class="gallery-item" data-art="sg-0901"><img src="https://aka.doubaocdn.com/s/ugrQlpNgK7" alt="涩琪9月1日自拍"><span>09.01 · 在家自拍</span></button>
-<button class="gallery-item" data-art="sg-0905"><img src="https://aka.doubaocdn.com/s/48HdEgyKgK" alt="涩琪9月5日绿头发"><span>09.05 · 绿头发</span></button>
-<button class="gallery-item" data-art="sg-0910"><img src="https://aka.doubaocdn.com/s/CThTIJtlWj" alt="涩琪9月10日贝果"><span>09.10 · 贝果</span></button>
-<button class="gallery-item" data-art="sg-0915"><img src="https://aka.doubaocdn.com/s/PUmN4xhpu1" alt="涩琪9月15日红墙"><span>09.15 · 红墙自拍</span></button>
-<button class="gallery-item" data-art="sg-0918"><img src="https://aka.doubaocdn.com/s/XjYkOFmMTt" alt="9月18日团体回归照"><span>09.18 · 回归团体照</span></button>
-</div>
-<div class="section-label">已存照片 · 收藏</div><div class="gallery">
-<button class="gallery-item" data-art="irene-0820"><img src="https://aka.doubaocdn.com/s/n7l4i6wdmw" alt="Irene8月20日自拍"><span>08.20 · Irene自拍</span></button>
-<button class="gallery-item" data-art="couple-jp"><img src="https://aka.doubaocdn.com/s/zTBEkeViQi" alt="日本双人合照"><span>日本 · 双人合照</span></button>
-</div>
-<div class="section-label">八月 · 回归期</div><div class="gallery">
-<button class="gallery-item" data-art="rv-0805"><img src="https://aka.doubaocdn.com/s/XjYkOFmMTt" alt="8月5日团体照"><span>08.05 · 回归团体照</span></button>
-</div>
-<div class="section-label">济州岛 · 2020年</div><div class="gallery">
-<button class="gallery-item" data-art="jj-2020-01"><img src="https://aka.doubaocdn.com/s/Wxdy2UTrVC" alt="2020济州岛自拍"><span>2020 · 济州岛自拍</span></button>
-</div>
-<div class="section-label">SOME LITTLE BEAUTIFUL THINGS</div><div class="gallery"><button class="gallery-item" data-art="flowers" aria-label="打开小花图案">${scene('flowers')}<span>一点温柔</span></button><button class="gallery-item" data-art="moon" aria-label="打开月亮图案">${scene('moon')}<span>今晚的月亮</span></button>${state.photos.map(p=>`<button class="gallery-item" data-photo="${p.id}" aria-label="打开${esc(p.name)}"><img src="${esc(p.src)}" alt="${esc(p.name)}"></button>`).join('')}</div><div class="notice">剧情图片只在你查看并保存后出现。你自己添加的图片仍只保存在当前浏览器中，不会上传。</div></div></div>`;$('#upload-photo').onclick=()=>$('#photo-upload').click();JapanStory.bindAlbum(screen);screen.querySelectorAll('[data-art]').forEach(b=>b.onclick=()=>showModal(scene(b.dataset.art)));screen.querySelectorAll('[data-photo]').forEach(b=>b.onclick=()=>{const p=state.photos.find(x=>x.id===b.dataset.photo);showModal(`<h3>${esc(p.name)}</h3><img class="preview-image" src="${esc(p.src)}" alt="${esc(p.name)}"><button class="danger" id="delete-photo">从相册中删除</button>`);$('#delete-photo').onclick=()=>{state.photos=state.photos.filter(x=>x.id!==p.id);persist();$('#modal').close();render('album');};});}
+function renderAlbum(){
+  const P=[['8月2日','舞台／后台'],['8月20日','热汤与海鲜葱饼'],['8月26日','两只未上釉陶杯'],['9月8日','烧制完成的陶杯'],['9月14日','机场／行李'],['9月14日','街景'],['9月15日','店内陈列'],['9月16日','舞台资料截图'],['9月19日','福冈后台'],['9月19日','观众合照'],['9月21日','雨水打湿的车窗'],['9月22日','水与热敷贴']];
+  let idx=-1;
+  const paint=()=>{
+    if(idx>=0){
+      const [d,c]=P[idx];
+      screen.innerHTML=`<div class="ios26 viewer"><div class="top"><button data-close>✕</button><span>${d} · ${c}</span><span>${idx+1}/${P.length}</span></div><div class="stage">照片 · ${c}</div><div class="foot"><button data-prev>‹</button><button data-next>›</button></div></div>`;
+      bindShared();
+      screen.querySelector('[data-close]').onclick=()=>{idx=-1;paint();};
+      const prev=screen.querySelector('[data-prev]'),next=screen.querySelector('[data-next]');
+      if(prev)prev.onclick=()=>{idx=(idx-1+P.length)%P.length;paint();};
+      if(next)next.onclick=()=>{idx=(idx+1)%P.length;paint();};
+      return;
+    }
+    screen.innerHTML=`<div class="ios26"><div class="nav"><button class="back" data-home>‹</button><h1>照片</h1><button class="act">···</button></div><div class="seg"><button class="on">图库</button><button>相簿</button></div><div class="grid">${P.map(([d,c],i)=>`<button data-photo="${i}"><span>${d}</span></button>`).join('')}</div><p class="ios-local-label">只标拍摄时间与是否公开，不标注拍摄者</p></div>`;
+    bindShared();
+    const h=screen.querySelector('[data-home]'); if(h)h.onclick=()=>render('phonehome');
+    screen.querySelectorAll('[data-seg], .seg button').forEach(b=>b.onclick=()=>{if(!b.classList.contains('on')){screen.querySelectorAll('.seg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');}});
+    screen.querySelectorAll('[data-photo]').forEach(b=>b.onclick=()=>{idx=Number(b.dataset.photo);paint();});
+  };
+  paint();
+}
+
 function isGroup(p=profile()){return !!p.isGroup;}
 function membersOf(p){return (p.memberIds||[]).map(id=>state.profiles.find(x=>x.id===id)).filter(Boolean);}
 function renderGroupSettings(){const g=profile();screen.innerHTML=`<div class="page">${head('群聊设置','群成员均为虚拟角色')}<div class="page-body"><form id="group-edit"><label class="field"><span>群聊名称</span><input name="name" maxlength="30" value="${esc(g.name)}" required></label><div class="section-label">群成员</div>${memberCheckboxes(g.memberIds)}<p class="count-label">选择至少两位虚拟角色。每轮最多由两位成员回复。</p><button class="primary wide">保存群聊设置</button></form><button class="subtle" data-view="chat">回到群聊</button><button class="danger" id="delete-group">删除群聊与聊天记录</button></div></div>`;$('#group-edit').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),ids=f.getAll('members'),name=String(f.get('name')).trim();if(ids.length<2||!name){toast('请填写群名，并选择至少两位成员。');return;}g.name=name;g.memberIds=ids;persist();toast('群聊已更新');render('profile');};$('#delete-group').onclick=()=>confirmDialog('删除这个群聊？','群里的聊天记录会被删除，联系人会保留。',()=>{removeConversationAudio(g.id);delete state.messages[g.id];state.groups=state.groups.filter(x=>x.id!==g.id);state.active=state.profiles[0].id;persist();render('home');});}
