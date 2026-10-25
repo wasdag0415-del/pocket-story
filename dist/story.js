@@ -382,13 +382,16 @@
       const previous=state.chapter.step||0;
       root.PocketFlow&&root.PocketFlow.reply(text);
       setTimeout(()=>{root.flowPush&&root.flowPush();},400);
-      state.chapter.step=Math.min(4,previous+1);
-      state.chapter.messages.push({step:previous<4?state.chapter.step:5,text:text.slice(0,240)});
-      state.chapter.messages=state.chapter.messages.slice(-24);
-      // 同步原来的状态字段，保持兼容
-      if(state.chapter.step >= 1) state.chapter.opening = true;
-      if(state.chapter.step >= 3) state.chapter.invite = true;
-      if(state.chapter.step >= 4){state.chapter.replied = true;state.chapterComplete=true;}
+      const _flowOn = !!(root.PocketFlow && root.PocketFlow.current && root.PocketFlow.current().await === 'reply');
+      if (!_flowOn) {
+        state.chapter.step=Math.min(4,previous+1);
+        state.chapter.messages.push({step:previous<4?state.chapter.step:5,text:text.slice(0,240)});
+        state.chapter.messages=state.chapter.messages.slice(-24);
+        // 同步原来的状态字段，保持兼容
+        if(state.chapter.step >= 1) state.chapter.opening = true;
+        if(state.chapter.step >= 3) state.chapter.invite = true;
+        if(state.chapter.step >= 4){state.chapter.replied = true;state.chapterComplete=true;}
+      }
       save();
       render();
     };
