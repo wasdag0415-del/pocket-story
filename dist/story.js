@@ -125,7 +125,7 @@
 
   function ktstory() {
     ensureUnread();
-    return wrap(`<header class='nf-friends-head'><strong>好友</strong><span>⌕　♙＋　⚙</span><button data-nav='phonehome' aria-label='返回桌面' style='border:0;background:transparent;font-size:15px'>⌂</button></header><div class='nf-scroll nf-friends-list'><section class='nf-my-profile'><span class='nf-default-avatar'></span><strong>2sides</strong><button>Profile ＋</button></section><h3>Channel <span>⌃</span></h3><section class='nf-channel-row'><span class='nf-channel-icon'>Ch</span><strong>Channel</strong><b>›</b></section><h3>好友 6 <span>⌃</span></h3><button class='nf-friend-row nf-kkt-pinned' data-route='currentchat'><span class='nf-default-avatar'></span><span><strong>组长老师 <em class='nf-kkt-pin'>置顶</em></strong><small>${state.chapter.replied?'就附近，不走远':state.chapter.invite?'按完好点了吗？':'去按了吗？'}</small></span>${unreadOf('current')?'<i>1</i>':''}</button><button class='nf-friend-row' data-kkt-thread='wendy'><span class='nf-kkt-avatar'>W</span><span><strong>Wendy</strong><small>到酒店以后跟我说一声</small></span>${unreadOf('wendy')?'<i>1</i>':''}</button><button class='nf-friend-row' data-route='groupchat'><span class='nf-kkt-avatar'>RV</span><span><strong>Red Velvet</strong><small>Yeri：合照发群里！</small></span></button><button class='nf-friend-row' data-route='managerchat'><span class='nf-kkt-avatar'>M</span><span><strong>manager</strong><small>明天集合提前十五分钟。</small></span></button><button class='nf-friend-row' data-kkt-thread='dancer'><span class='nf-kkt-avatar'>댄</span><span><strong>伴舞</strong><small>［地点：橘子街］</small></span></button><button class='nf-friend-row' data-kkt-thread='joy'><span class='nf-kkt-avatar'>J</span><span><strong>Joy</strong><small>不是说好要拍给我看吗ㅋㅋ</small></span>${unreadOf('joy')?'<i>1</i>':''}</button></div><nav class='nf-kkt-tabs'><button class='active'>♟<small>好友</small></button><button>●<small>聊天</small></button><button>☎<small>通话</small></button><button>•••<small>更多</small></button></nav>`, 'nf-kkt-app nf-kkt-friends');
+    return wrap(`<header class='nf-friends-head'><strong>好友</strong><span>⌕　♙＋　⚙</span><button data-nav='phonehome' aria-label='返回桌面' style='border:0;background:transparent;font-size:15px'>⌂</button></header><div class='nf-scroll nf-friends-list'><section class='nf-my-profile'><span class='nf-default-avatar'></span><strong>2sides</strong><button>Profile ＋</button></section><h3>Channel <span>⌃</span></h3><section class='nf-channel-row'><span class='nf-channel-icon'>Ch</span><strong>Channel</strong><b>›</b></section><h3>好友 6 <span>⌃</span></h3><button class='nf-friend-row nf-kkt-pinned' data-route='currentchat'><span class='nf-kkt-avatar' style='background:#aab8e8;color:#fff;font-weight:700'>I</span><span><strong>组长老师 <em class='nf-kkt-pin'>置顶</em></strong><small>${state.chapter.replied?'就附近，不走远':state.chapter.invite?'按完好点了吗？':'去按了吗？'}</small></span>${unreadOf('current')?'<i>1</i>':''}</button><button class='nf-friend-row' data-kkt-thread='wendy'><span class='nf-kkt-avatar'>W</span><span><strong>Wendy</strong><small>到酒店以后跟我说一声</small></span>${unreadOf('wendy')?'<i>1</i>':''}</button><button class='nf-friend-row' data-route='groupchat'><span class='nf-kkt-avatar'>RV</span><span><strong>Red Velvet</strong><small>Yeri：合照发群里！</small></span></button><button class='nf-friend-row' data-route='managerchat'><span class='nf-kkt-avatar'>M</span><span><strong>manager</strong><small>明天集合提前十五分钟。</small></span></button><button class='nf-friend-row' data-kkt-thread='dancer'><span class='nf-kkt-avatar'>댄</span><span><strong>伴舞</strong><small>［地点：橘子街］</small></span></button><button class='nf-friend-row' data-kkt-thread='joy'><span class='nf-kkt-avatar'>J</span><span><strong>Joy</strong><small>不是说好要拍给我看吗ㅋㅋ</small></span>${unreadOf('joy')?'<i>1</i>':''}</button></div><nav class='nf-kkt-tabs'><button class='active'>♟<small>好友</small></button><button>●<small>聊天</small></button><button>☎<small>通话</small></button><button>•••<small>更多</small></button></nav>`, 'nf-kkt-app nf-kkt-friends');
   }
 
 
@@ -196,7 +196,7 @@
   }
 
   function groupchat() {
-    return wrap(`${head('Red Velvet', 'ktstory')}<div class='nf-scroll nf-chat-scroll'><div class='nf-chat-date'>9月14日</div><div class='nf-chat-message them'><small>Wendy · 10:28</small><p>涩琪先出发了吗？</p></div><div class='nf-chat-message me'><small>你 · 10:31</small><p>嗯，先过去排练。</p></div><div class='nf-chat-message them'><small>Yeri · 10:32</small><p>到日本帮我看便利店新品！！</p></div><div class='nf-chat-message them'><small>Joy · 10:34</small><p>她先落地再说ㅋㅋ</p></div><div class='nf-chat-date'>9月19日 · 福冈首场结束后</div><div class='nf-chat-message them'><small>Wendy · 21:12</small><p>首场顺利结束了吗？</p></div><div class='nf-chat-message them'><small>Joy · 21:13</small><p>我刚看到日本账号发预告了ㅠㅠ</p></div><div class='nf-chat-message them'><small>Yeri · 21:13</small><p>结束以后记得吃饭！！</p></div><div class='nf-chat-message them'><small>组长老师 · 21:14</small><p>刚结束，大家辛苦了。</p></div><div class='nf-chat-message me'><small>你 · 21:14</small><p>结束了ㅎㅎ</p></div><div class='nf-chat-message them'><small>Wendy · 21:15</small><p>先休息一下，晚点再聊</p></div><div class='nf-chat-message them'><small>Joy · 21:15</small><p>让她们先喘口气吧ㅋㅋ</p></div><div class='nf-chat-message them'><small>Yeri · 21:16</small><p>合照发群里！</p></div><div class='nf-chat-message them'><small>组长老师 · 21:16</small><p>等官方发。</p></div><div class='nf-chat-message me'><small>你 · 21:17</small><p>嗯。</p></div></div><div class='nf-story-chat-tools'><button data-route='ktstory'>消息列表</button></div>`, 'nf-story-chat');
+    return wrap(`${head('Red Velvet', 'ktstory')}<div class='nf-scroll nf-chat-scroll'><div class='nf-chat-date'>9月14日</div><div class='nf-chat-message them'><small>Wendy · 10:28</small><p>涩琪先出发了吗？</p></div><div class='nf-chat-message me'><small>你 · 10:31</small><p>嗯，先过去排练。</p></div><div class='nf-chat-message them'><small>Yeri · 10:32</small><p>到日本帮我看便利店新品！！</p></div><div class='nf-chat-message them'><small>Joy · 10:34</small><p>她先落地再说ㅋㅋ</p></div><div class='nf-chat-date'>9月19日 · 福冈首场结束后</div><div class='nf-chat-message them'><small>Wendy · 21:12</small><p>首场顺利结束了吗？</p></div><div class='nf-chat-message them'><small>Joy · 21:13</small><p>我刚看到日本账号发预告了ㅠㅠ</p></div><div class='nf-chat-message them'><small>Yeri · 21:13</small><p>结束以后记得吃饭！！</p></div><div class='nf-chat-message them'><small>组长老师 · 21:14</small><p>刚结束，大家辛苦了。</p></div><div class='nf-chat-message me'><small>你 · 21:14</small><p>结束了ㅎㅎ</p></div><div class='nf-chat-message them'><small>Wendy · 21:15</small><p>先休息一下，晚点再聊</p></div><div class='nf-chat-message them'><small>Joy · 21:15</small><p>让她们先喘口气吧ㅋㅋ</p></div><div class='nf-chat-message them'><small>Yeri · 21:16</small><p>合照发群里！</p></div><div class='nf-chat-message them'><small>组长老师 · 21:16</small><p>等官方发。</p></div><div class='nf-chat-message me'><small>你 · 21:17</small><p>嗯。</p></div></div><form id='side-composer' class='nf-composer' style='display:flex;gap:8px;padding:8px 10px 16px;background:#b2c7d9'><input id='side-input' maxlength='200' placeholder='发消息...' style='flex:1;border:0;border-radius:18px;padding:9px 14px;font-size:13px'><button type='submit' style='border:0;border-radius:16px;padding:0 14px;height:32px;background:#fee500;font-size:12px;font-weight:600'>发送</button></form><div class='nf-story-chat-tools'><button data-route='ktstory'>消息列表</button></div>`, 'nf-story-chat');
   }
 
   const UNREAD_KEY = 'pocket-kkt-unread';
@@ -217,7 +217,7 @@
       joy: { name: 'Joy', body: `<div class='nf-chat-date'>9月18日</div><div class='nf-chat-message them'><small>Joy · 22:01</small><p>便利店新品呢？</p></div><div class='nf-chat-message me'><small>你 · 22:05</small><p>没来得及去。</p></div><div class='nf-chat-message them'><small>Joy · 22:05</small><p>不是说好要拍给我看吗ㅋㅋ</p></div><div class='nf-chat-message me'><small>你 · 22:08</small><p>后面还有时间。</p></div><div class='nf-chat-message them'><small>Joy · 22:09</small><p>行程很长，别第一周就把自己累坏了。</p></div>` }
     };
     const chat = chats[kktThread] || chats.wendy;
-    return wrap(`${head(chat.name, 'ktstory')}<div class='nf-scroll nf-chat-scroll'>${chat.body}</div><div class='nf-story-chat-tools'><button data-route='ktstory'>消息列表</button></div>`, 'nf-story-chat');
+    return wrap(`${head(chat.name, 'ktstory')}<div class='nf-scroll nf-chat-scroll'>${chat.body}</div><form id='side-composer' class='nf-composer' style='display:flex;gap:8px;padding:8px 10px 16px;background:#b2c7d9'><input id='side-input' maxlength='200' placeholder='发消息...' style='flex:1;border:0;border-radius:18px;padding:9px 14px;font-size:13px'><button type='submit' style='border:0;border-radius:16px;padding:0 14px;height:32px;background:#fee500;font-size:12px;font-weight:600'>发送</button></form><div class='nf-story-chat-tools'><button data-route='ktstory'>消息列表</button></div>`, 'nf-story-chat');
   }
 
   function isAvailable(post) {
@@ -371,6 +371,27 @@
 
   function bind() {
     const screen = context.screen;
+    const _sc = screen.querySelector('#side-composer');
+    if (_sc) {
+      _sc.onsubmit = (e) => {
+        e.preventDefault();
+        const inp = screen.querySelector('#side-input');
+        const v = (inp.value || '').trim();
+        if (!v) return;
+        const box = screen.querySelector('.nf-chat-scroll');
+        if (!box) return;
+        const C = root.PocketIntent;
+        const tags = C ? C.classify(v).tags : [];
+        const key = tags.includes('care_back') ? 'care' : (tags.includes('still_hurts') ? 'tired' : ((tags.includes('finished') || tags.includes('better')) ? 'safe' : '*'));
+        const R = { wendy: { care: '我没事。', tired: '那就早点休息，别硬撑。', safe: '好。路上小心。', '*': '嗯。' },
+                    joy: { care: '我很好啦。', tired: '那今天就算了ㅋㅋ', safe: '好。', '*': 'ㅋㅋㅋㅋ' },
+                    japan: { '*': '了解。' }, styling: { '*': '知道了。' }, dancer: { '*': '嗯，晚安！' } }[kktThread] || { '*': '嗯。' };
+        const reply = R[key] || R['*'];
+        box.insertAdjacentHTML('beforeend', `<div class='nf-chat-message me'><p>${esc(v)}</p></div><div class='nf-chat-message them'><p>${esc(reply)}</p></div>`);
+        inp.value = '';
+        box.scrollTop = box.scrollHeight;
+      };
+    }
     screen.querySelectorAll('[data-save-place]').forEach(b=>b.onclick=()=>{
       const name=b.dataset.savePlace;
       try{root.localStorage.setItem('pocket-map-saved',JSON.stringify({name,from:'伴舞推荐',savedAt:Date.now()}));}catch{}
