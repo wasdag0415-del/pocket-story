@@ -605,6 +605,40 @@
     lockedText: '下一段记录尚未开放。她们还没有走到海边。'
   };
 
-  root.MainlineData = { lock, desktop, ending, kkt, contacts, calls, sms, calendar, weather, map, photos, memos, safari, pann, instagram, youtube, callReplays, nodes };
+  // 定稿世界书 §10：三个结局（不是平行宇宙，只反映玩家理解到哪一步）
+  const endings = {
+    true: {
+      id: 'true', title: '门没锁',
+      condition: '理解过去的亲密、冲突原因和现在的关系，找到完整情绪锚点',
+      lines: [
+        { w: 's', t: '你睡了吗？' }, { w: 'j', t: '没有。' },
+        { w: 's', t: '我今天不太好。' }, { w: 'j', t: '要我过去吗？' },
+        { w: 's', t: '你累不累？' }, { w: 'j', t: '很累。' },
+        { w: 's', t: '那算了。' }, { w: 'j', t: '涩琪。' },
+        { w: 'j', t: '很累也可以过去。' }, { w: 's', t: '门没锁。' }
+      ]
+    },
+    unfinished: {
+      id: 'unfinished', title: '要我过去吗',
+      condition: '发现关系变化，但没有找到足够的情绪锚点',
+      lines: [
+        { w: 's', t: '你睡了吗？' }, { w: 'j', t: '没有。' },
+        { w: 's', t: '你现在方便吗？' }, { w: 'j', t: '要我过去吗？' }
+      ],
+      open: true
+    },
+    avoidance: {
+      id: 'avoidance', title: '放在门口',
+      condition: '确认两个人仍然关心彼此，却把问题理解成生活距离，没有理解争执核心',
+      lines: [
+        { w: 's', t: '药是不是在你那里？' }, { w: 'j', t: '嗯。' },
+        { w: 's', t: '放门口就好。' }, { w: 'j', t: '还有吃的。' },
+        { w: 's', t: '你买多了？' }, { w: 'j', t: '嗯。' },
+        { w: 's', t: '拿到了。' }, { w: 's', t: '很好吃。' }
+      ]
+    }
+  };
+
+  root.MainlineData = { lock, desktop, ending, endings, kkt, contacts, calls, sms, calendar, weather, map, photos, memos, safari, pann, instagram, youtube, callReplays, nodes };
   if (typeof module !== 'undefined') module.exports = root.MainlineData;
 })(typeof window === 'undefined' ? globalThis : window);

@@ -61,6 +61,18 @@ test('数据完整性：内容数量与文案包一致', () => {
   assert.equal(D.youtube.length, 4);
 });
 
+test('定稿三结局数据齐备（门没锁 / 要我过去吗 / 放在门口）', () => {
+  const { D } = boot();
+  const E = D.endings;
+  assert.equal(Object.keys(E).length, 3);
+  assert.equal(E.true.title, '门没锁');
+  assert.equal(E.true.lines.at(-1).t, '门没锁。');
+  assert.equal(E.unfinished.title, '要我过去吗');
+  assert.equal(E.unfinished.open, true, '未完成结局不显示回复');
+  assert.equal(E.avoidance.title, '放在门口');
+  assert.equal(E.avoidance.lines.at(-1).t, '很好吃。');
+});
+
 test('锁屏 / 桌面 / 结尾数据齐备且与文案包一致', () => {
   const { D } = boot();
   assert.equal(D.lock.time, '23:06');
