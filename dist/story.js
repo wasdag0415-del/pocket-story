@@ -174,6 +174,7 @@
     if(step >= 3) lines[5].text=saved.get(3)||lines[5].text;
     if(step >= 4) lines[8].text=saved.get(4)||lines[8].text;
     state.chapter.messages.filter((item)=>item.step>4).forEach((item)=>lines.push({role:'me',text:item.text}));
+    if(root.PocketFlow){const _fl=root.PocketFlow.chatLines();if(_fl.length){lines.length=0;_fl.forEach(l=>lines.push(l));}}
     const hints=['回复“去按了吗？”','输入消息','回复“按完好点了吗？”','回复散步邀请','输入消息'];
     const composer = `<form id="pc-story-composer" class="pc-composer"><input id="pc-story-input" maxlength="240" autocomplete="off" placeholder="${hints[step]||'输入消息'}" aria-label="KakaoTalk 消息" required><button aria-label="发送消息">↑</button></form>`;
     
@@ -369,6 +370,8 @@
       const input=screen.querySelector('#pc-story-input'),text=input.value.trim();
       if(!text)return;
       const previous=state.chapter.step||0;
+      root.PocketFlow&&root.PocketFlow.reply(text);
+      setTimeout(()=>{root.flowPush&&root.flowPush();},400);
       state.chapter.step=Math.min(4,previous+1);
       state.chapter.messages.push({step:previous<4?state.chapter.step:5,text:text.slice(0,240)});
       state.chapter.messages=state.chapter.messages.slice(-24);
