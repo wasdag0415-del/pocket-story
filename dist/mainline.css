@@ -1,0 +1,118 @@
+/* Pocket Story · 第一开发段主线界面样式
+ * 跟随现有浅色 sage 主题（.ios-native-app 白底 / 强调 #7b9274）
+ */
+
+/* ---------- KakaoTalk ---------- */
+.kkt-list { padding: 0; }
+.kkt-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 0; border-bottom: 1px solid #f0f0f0; background: #fff; text-align: left; width: 100%; }
+.kkt-row:active { background: #f6f6f6; }
+.kkt-row > span:last-child { flex: 1; min-width: 0; }
+.kkt-row strong { display: block; font-size: 15px; color: #161616; }
+.kkt-row small { display: block; color: #8e8e93; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kkt-row > i { background: #d8345f; color: #fff; border-radius: 9px; padding: 0 6px; font-size: 11px; font-style: normal; }
+.kkt-avatar { width: 44px; height: 44px; border-radius: 50%; background: #dbe6d3; color: #3d5a3d; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; flex-shrink: 0; }
+.kkt-row.hist .kkt-avatar { background: #e9edf3; color: #8e8e93; }
+.kkt-chat { display: flex; flex-direction: column; gap: 8px; padding: 16px; }
+.kkt-bubble { max-width: 76%; padding: 9px 13px; border-radius: 16px; font-size: 14px; line-height: 1.5; }
+.kkt-bubble p { margin: 0; }
+.kkt-bubble.me { align-self: flex-end; background: #b2c7d9; color: #161616; border-bottom-right-radius: 4px; }
+.kkt-bubble.them { align-self: flex-start; background: #fff; color: #161616; border: 1px solid #ededed; border-bottom-left-radius: 4px; }
+.kkt-composer { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid #ededed; background: #fff; }
+.kkt-composer input { flex: 1; border: 1px solid #e5e5e5; border-radius: 18px; padding: 9px 14px; font-size: 14px; background: #f7f7f7; }
+.kkt-composer button { border: 0; background: #7b9274; color: #fff; border-radius: 18px; padding: 0 16px; font-size: 14px; }
+
+/* ---------- Pann ---------- */
+.pann-brand { padding: 14px 16px 6px; }
+.pann-brand strong { font-size: 20px; color: #161616; }
+.pann-brand small { display: block; color: #8e8e93; font-size: 12px; }
+.pann-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 13px 16px; border: 0; border-bottom: 1px solid #f0f0f0; background: #fff; text-align: left; width: 100%; }
+.pann-row strong { display: block; font-size: 14px; color: #161616; }
+.pann-row small { color: #8e8e93; font-size: 12px; }
+.pann-row b { color: #c0c0c0; font-size: 18px; }
+.pann-app h2 { font-size: 18px; margin: 12px 0 4px; color: #161616; }
+.pann-app .ios-app-scroll > small { color: #8e8e93; }
+.pann-body { color: #333; font-size: 14px; line-height: 1.7; margin: 10px 0; }
+.pann-comments { margin-top: 10px; }
+.pann-comment { border-top: 1px solid #f0f0f0; padding: 11px 0; }
+.pann-comment strong { font-size: 13px; color: #7b9274; }
+.pann-comment i { font-style: normal; color: #8e8e93; margin-left: 4px; }
+.pann-comment p { margin: 4px 0 0; font-size: 14px; color: #333; line-height: 1.6; }
+
+/* ---------- 备忘录 ---------- */
+.memo { padding: 14px 16px; border-bottom: 1px solid #f0f0f0; background: #fff; }
+.memo h3 { font-size: 15px; margin: 0 0 6px; color: #161616; }
+.memo h3 small { display: block; font-size: 11px; color: #8e8e93; font-weight: 400; margin-top: 2px; }
+.memo p { margin: 2px 0; font-size: 13px; color: #444; line-height: 1.55; }
+
+/* ---------- 地图 ---------- */
+.map-favs { list-style: none; padding: 0; margin: 0; }
+.map-favs li { padding: 11px 16px; border-bottom: 1px solid #f0f0f0; background: #fff; }
+.map-favs strong { display: block; font-size: 14px; color: #161616; }
+.map-favs small { color: #8e8e93; font-size: 12px; }
+.map-route { padding: 8px 16px; color: #333; font-size: 13px; margin: 0; }
+.map-route time { color: #8e8e93; margin-right: 8px; }
+.map-locked { margin: 12px 16px; padding: 12px; background: #f7f7f7; border-radius: 12px; border: 1px dashed #d0d0d0; }
+.map-locked strong { display: block; font-size: 14px; color: #161616; }
+.map-locked p, .map-locked small { color: #8e8e93; font-size: 12px; }
+
+/* ---------- Instagram ---------- */
+.ig-post { padding: 14px 16px; border-bottom: 1px solid #f0f0f0; background: #fff; }
+.ig-post-head { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+.ig-post-head strong { font-size: 14px; color: #161616; }
+.ig-post-head small { display: block; color: #8e8e93; font-size: 11px; }
+.ig-post > p { font-size: 14px; color: #333; }
+.ig-comment { display: block; font-size: 12px; color: #8e8e93; margin-top: 4px; }
+
+/* ---------- YouTube ---------- */
+.yt-item { padding: 13px 16px; border-bottom: 1px solid #f0f0f0; background: #fff; }
+.yt-item strong { display: block; font-size: 14px; color: #161616; }
+.yt-item small { color: #8e8e93; font-size: 11px; }
+.yt-item p { color: #666; font-size: 12px; margin: 6px 0 0; line-height: 1.5; }
+.yt-empty { padding: 14px 16px; color: #8e8e93; font-size: 13px; }
+
+/* ---------- 相册 ---------- */
+.gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 14px 12px; }
+.gallery-item { border: 0; padding: 0; background: #fff; border-radius: 12px; overflow: hidden; text-align: left; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.gallery-item:active { opacity: .85; }
+.photo-placeholder { display: flex; align-items: center; justify-content: center; height: 118px; background: #e9edf3; color: #9aa4ad; font-size: 30px; }
+.gallery-item > span:last-child { display: block; padding: 8px 10px; font-size: 12px; color: #444; }
+
+/* ---------- 电话回放 ---------- */
+.call-replay-tag { color: #d8345f; font-size: 11px; margin: 4px 0; }
+.call-line { margin: 6px 0; font-size: 14px; line-height: 1.55; color: #333; }
+.call-line b { color: #7b9274; margin-right: 6px; }
+.call-line.me b { color: #3d5a3d; }
+.call-pause { color: #8e8e93; text-align: center; margin: 8px 0; }
+
+/* ---------- 天气 ---------- */
+.ios-weather-content { padding: 8px 0; }
+.ios-weather-content h4 { padding: 6px 16px 0; margin: 0; color: #8e8e93; font-size: 11px; }
+.ios-weather-card { padding: 12px 16px; border-bottom: 1px solid #f0f0f0; background: #fff; }
+.ios-weather-card h3 { font-size: 15px; margin: 0 0 4px; color: #161616; }
+.ios-weather-card h3 span { color: #8e8e93; font-size: 11px; font-weight: 400; }
+.ios-weather-temp { font-size: 30px; font-weight: 700; color: #161616; }
+.ios-weather-card p { margin: 2px 0; font-size: 13px; color: #444; }
+.ios-weather-card small { color: #d8345f; font-size: 11px; }
+
+/* ---------- 日历 ---------- */
+.ios-calendar-title { padding: 14px 16px 4px; }
+.ios-calendar-title span { color: #8e8e93; font-size: 12px; }
+.ios-calendar-title strong { display: block; font-size: 20px; color: #161616; }
+.ios-calendar-hint { padding: 4px 16px 10px; color: #8e8e93; font-size: 12px; margin: 0; }
+.ios-calendar-app button[data-date] { display: block; width: 100%; text-align: left; padding: 11px 16px; border: 0; border-bottom: 1px solid #f0f0f0; background: #fff; }
+.ios-calendar-app button[data-date] time { color: #8e8e93; font-size: 11px; }
+.ios-calendar-app button[data-date] strong { display: block; font-size: 14px; color: #161616; margin: 2px 0; }
+.ios-calendar-app button[data-date] small { color: #8e8e93; font-size: 12px; }
+.ios-calendar-app button[data-date].locked strong { color: #b0b0b0; }
+.ios-calendar-app button[data-date].today { background: #f2f6f0; }
+
+/* ---------- Safari ---------- */
+.ios-browser-start h2 { font-size: 20px; margin: 14px 16px 6px; color: #161616; }
+.ios-browser-history button { display: block; width: 100%; text-align: left; padding: 11px 16px; border: 0; border-bottom: 1px solid #f0f0f0; background: #fff; }
+.ios-browser-history button strong { display: block; font-size: 14px; color: #161616; }
+.ios-browser-history button time { color: #8e8e93; font-size: 11px; }
+.ios-search-results { padding: 12px 16px; }
+.ios-search-results h2 { font-size: 16px; margin: 4px 0 10px; color: #161616; }
+.ios-search-results button { display: block; width: 100%; text-align: left; padding: 10px 0; border: 0; border-bottom: 1px solid #f0f0f0; background: #fff; }
+.ios-search-results button strong { display: block; font-size: 14px; color: #161616; }
+.ios-search-results button small { color: #8e8e93; font-size: 12px; }
