@@ -44,11 +44,7 @@
     el.style.display = 'block';
     const open = el.querySelector('.native-notice-open');
     const close = el.querySelector('.native-notice-close');
-    if (open) open.onclick = () => {
-      dismiss();
-      if (n.view && root.render) root.render(n.view);
-      else if (n.view && root.JapanStory) root.JapanStory.open(n.view, null);
-    };
+    if (open) open.onclick = () => { dismiss(); };
     if (close) close.onclick = (e) => { e.stopPropagation(); dismiss(); };
   }
   function dismiss() {
