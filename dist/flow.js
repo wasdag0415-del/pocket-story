@@ -40,13 +40,14 @@
     }
   ];
 
-  const fresh = () => ({ version: 1, i: 0, replies: [], synced: false });
+  const fresh = () => ({ version: 1, i: 0, replies: [], synced: false, seenIndex: -1 });
   function normalize(v) {
     const n = fresh();
     if (!v || v.version !== 1) return n;
     n.i = Number.isInteger(v.i) ? Math.max(0, Math.min(STEPS.length - 1, v.i)) : 0;
     n.replies = Array.isArray(v.replies) ? v.replies.filter((x) => typeof x === 'string').slice(-20) : [];
     n.synced = v.synced === true;
+    n.seenIndex = Number.isInteger(v.seenIndex) ? v.seenIndex : -1;
     return n;
   }
 
@@ -86,6 +87,17 @@
     return true;
   }
 
+  function targetView() {
+    const s = at();
+    if (!s) return null;
+    if (s.push && s.push.view) return s.push.view;
+    const m = String(s.await || '').match(/^open:(.+)$/);
+    if (m) return m[1];
+    if (s.await === 'reply') return 'ktstory';
+    return null;
+  }
+  function markSeen(view) { if (targetView() === view) { state.seenIndex = state.i; save(); } }
+  function badgeFor(view) { return targetView() === view && state.seenIndex !== state.i; }
   function current() { return at(); }
   function progress() {
     return { i: state.i, step: at().id, synced: state.synced, total: STEPS.length };
@@ -94,7 +106,7 @@
   function getState() { return JSON.parse(JSON.stringify(state)); }
 
   root.PocketFlow = {
-    KEY, STEPS, chatLines, reply, openApp, current, progress, reset, getState, normalize
+    KEY, STEPS, chatLines, reply, openApp, markSeen, badgeFor, current, targetView, progress, reset, getState, normalize
   };
   if (typeof module !== 'undefined') module.exports = root.PocketFlow;
 })(typeof window === 'undefined' ? globalThis : window);
