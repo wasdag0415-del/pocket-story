@@ -4,7 +4,7 @@
  */
 (function (root) {
   'use strict';
-  const KEY = 'pocket-flow-v1';
+  const KEY = 'pocket-flow-v2';
 
   // 开场：锁屏 → KKT 两轮 → 日历推送 → 信息推送 → 确认主人
   const STEPS = [
