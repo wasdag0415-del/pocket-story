@@ -21,9 +21,11 @@
       push:{ app:'Apple 钱包', title:'23:41 · 7-ELEVEN FUKUOKA', text:'¥1,180' } },
     { id:'N06', them:['吃东西了吗？'], await:'reply', pick:['convenience','ate','not_ate','defensive','care_back'],
       resp:{ convenience:['别只吃零食。'], ate:['别只吃零食。'], not_ate:['多少吃一点。'], defensive:['我只是问你有没有吃。'], care_back:['吃了。','你呢？'], '*':['别只吃零食。'] } },
-    { id:'N07', them:['到酒店了吗？'], await:'reply', pick:['finished','better','*'],
+    { id:'N07', them:['别只吃零食。'], await:'reply', pick:['*'],
+      resp:{ '*':['到酒店了吗？'] } },
+    { id:'N08', them:['到酒店了吗？'], await:'reply', pick:['finished','*'],
       resp:{ '*':['好。','早点睡。'] } },
-    { id:'N08', them:['好。','早点睡。'], await:'none',
+    { id:'N09', them:['好。','早点睡。'], await:'none',
       push:{ app:'日历', title:'今日行程 · 11:30 大堂集合', text:'移动至大阪', view:'calendar' } }
   ];
 
