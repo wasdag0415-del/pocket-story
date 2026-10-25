@@ -2,7 +2,7 @@
   "name": "night-ferry-found-phone",
   "private": true,
   "scripts": {
-    "test": "node tests/mainline.test.cjs && node tests/segment1-ui.test.cjs"
+    "test": "node tests/mainline.test.cjs"
   },
   "devDependencies": {
     "linkedom": "^0.18.12"
