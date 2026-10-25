@@ -422,7 +422,21 @@
         if(state.chapter.step >= 4){state.chapter.replied = true;state.chapterComplete=true;}
       }
       save();
-      render();
+      const _box=screen.querySelector('.nf-chat-scroll');
+      if(_box){
+        const _me=document.createElement('div');_me.className='nf-chat-message me';_me.innerHTML='<p>'+esc(text)+'</p>';_box.appendChild(_me);
+        const _tp=document.createElement('div');_tp.className='nf-chat-message them';_tp.id='pc-typing';_tp.innerHTML='<p>…</p>';_box.appendChild(_tp);
+        _box.scrollTop=_box.scrollHeight;
+      }
+      input.value='';
+      setTimeout(()=>{
+        try{
+          if((document.querySelector('.phone-screen')||{}).dataset && document.querySelector('.phone-screen').dataset.view!=='ktstory'){
+            if(root.markUnread)root.markUnread('ktstory');
+          }
+        }catch(e){}
+        render();
+      }, 2000+Math.floor(Math.random()*3000));
     };
     screen.querySelectorAll('[data-photo-detail]').forEach(b=>b.onclick=()=>{screen.querySelector('#pc-photo-detail').hidden=false;});
     screen.querySelectorAll('[data-history]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.history);if(i<=state.chapter.read.length){eventIndex=i;go('historychat');}});
