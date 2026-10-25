@@ -50,6 +50,7 @@ function render(next=view){if(next!==view)PocketVoice.stop();if(next==='phonehom
 if(view==='lock')renderLockScreen();
 else if(view==='passcode')renderPasscode();
 else if(view==='phonehome')renderPhoneHome();
+else if(view==='notebook')renderMainNotes();
 else if(['opening','forum','notebook','ktstory','couplechat','storychat','official','chapterend'].includes(view))JapanStory.open(view,storyContext());
 else if(view==='youtube')renderYouTube();
 else if(view==='instagram')renderInstagram();
@@ -400,6 +401,27 @@ function scrollChat(){const el=$('#messages');if(el)el.scrollTop=el.scrollHeight
 function send(raw,extra={}){if(isGroup()&&!membersOf(profile()).length){toast('群里还没有可回复的角色，请先编辑群成员。');return false;}const text=raw.trim();if(!text||pending.has(state.active))return false;const id=state.active;state.messages[id]??=[];const m={id:uid(),role:'user',text:text.slice(0,1200),at:Date.now(),...extra};state.messages[id].push(m);if(!persist()){state.messages[id].pop();return false;}queueReplies(id,text,!!extra.recording);return true;}
 function toggleFavorite(id){const m=(state.messages[state.active]||[]).find(m=>m.id===id);if(!m)return;const saved=state.favorites.some(f=>f.id===id);state.favorites=saved?state.favorites.filter(f=>f.id!==id):[...state.favorites,{...m,name:m.senderName||profile().name}];persist();render('chat');toast(saved?'已取消收藏':'已放进心动收藏');}
 function flowPush(){const F=window.PocketFlow;if(!F)return;const st=F.current();const p=(F.pendingPush&&F.pendingPush())||(st&&(st.push||st.pushAfter));if(!p)return;if(window.PocketNotify){window.PocketNotify.push(p);if(F.clearPending)F.clearPending();return;}const n=$('#notification');if(!n)return;n.innerHTML=`<small>${esc(p.app)}</small><strong>${esc(p.title)}</strong>${esc(p.text)}`;n.hidden=false;n.onclick=()=>{n.hidden=true;};}
+function renderMainNotes(){
+  const KEY='pocket-notes-v1';
+  const seed=[['日本想去的地方_v1','展览\n唱片店\n安静一点的咖啡店\n可以拍外景的位置\n雨天备用地点'],['两个人挑唱片','各自替对方选一张\n不提前说理由\n回去以后交换听\n不要拍太久\n她可能不想一直说话'],['陶艺','左边：蓝色\n右边：白色\n白色釉再问老师\n杯口还要修\n两个都不要写名字'],['无标题','我不是一定要现在决定。\n只是以为她也在期待。'],['未发送','我知道你只是累。\n我也不知道为什么会变成这样。'],['兵库结束以后','大阪集合 11:40\n热敷贴\n相机充电\n橘子街营业时间\n不一定去']];
+  let list; try{ list=JSON.parse(localStorage.getItem(KEY)); }catch{}
+  if(!Array.isArray(list)||!list.length){ list=seed.map(([t,b])=>({id:'n'+Math.random().toString(36).slice(2,7),title:t,body:b})); try{localStorage.setItem(KEY,JSON.stringify(list));}catch{} }
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(list));}catch{}};
+  const listView=()=>{
+    screen.innerHTML=`<div class="ios26"><div class="nav"><button class="back" data-home>‹</button><h1>备忘录</h1><button class="act" data-new>＋</button></div><div class="group">${list.map(n=>`<button class="cell" data-open="${n.id}"><span class="t">${esc(n.title)}<small>${esc((n.body||'').split('\n')[0].slice(0,22))}</small></span><span class="chev">›</span></button>`).join('')}</div><p class="ios-local-label">只保存在本机</p></div>`;
+    bindShared();
+    const h=screen.querySelector('[data-home]'); if(h)h.onclick=()=>render('phonehome');
+    const nb=screen.querySelector('[data-new]'); if(nb)nb.onclick=()=>{const n={id:'n'+Math.random().toString(36).slice(2,7),title:'新备忘录',body:''};list.unshift(n);save();editView(n);};
+    screen.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>editView(list.find(x=>x.id===b.dataset.open)));
+  };
+  const editView=(n)=>{
+    screen.innerHTML=`<div class="ios26"><div class="nav"><button class="back" data-back>‹ 备忘录</button><h1></h1><button class="act" data-save>完成</button></div><div style="padding:14px 16px"><input id="nt" value="${esc(n.title)}" style="width:100%;border:0;background:transparent;font-size:20px;font-weight:600;outline:0;margin-bottom:10px"><textarea id="nb" style="width:100%;min-height:320px;border:0;background:transparent;font-size:14px;line-height:1.9;outline:0;resize:none">${esc(n.body)}</textarea></div></div>`;
+    bindShared();
+    screen.querySelector('[data-back]').onclick=listView;
+    screen.querySelector('[data-save]').onclick=()=>{n.title=screen.querySelector('#nt').value.trim()||'新备忘录';n.body=screen.querySelector('#nb').value;save();listView();};
+  };
+  listView();
+}
 function renderWallet(){
   const TX=[{id:'w1',merchant:'7-ELEVEN FUKUOKA',amount:'¥1,180',time:'9月23日 23:41',card:'•••• 0329',day:'今天'},{id:'w2',merchant:'FamilyMart 神户',amount:'¥640',time:'9月22日 21:10',card:'•••• 0329',day:'昨天'},{id:'w3',merchant:'STARBUCKS 博多',amount:'¥780',time:'9月19日 15:22',card:'•••• 0329',day:'9月19日'}];
   const list=()=>{screen.innerHTML=`<div class="ios-native-app">${iosBack('Apple 钱包')}<div class="ios-app-scroll" style="padding:14px"><div style="background:linear-gradient(135deg,#1c1c1e,#3a3a3c);border-radius:16px;padding:18px;color:#fff;margin-bottom:16px"><small style="opacity:.7;font-size:12px">卡片 ·•••• 0329</small><div style="font-size:26px;font-weight:700;margin-top:6px">¥2,600</div><small style="opacity:.6;font-size:11px">近三日消费</small></div>${TX.map(t=>`<button data-tx="${t.id}" style="display:flex;justify-content:space-between;align-items:center;width:100%;padding:13px 4px;border:0;border-bottom:1px solid #f0f0f0;background:transparent;text-align:left"><span><strong style="display:block;font-size:14px">${t.merchant}</strong><small style="color:#8e8e93;font-size:12px">${t.time}</small></span><span style="font-size:15px;font-weight:600">${t.amount}</span></button>`).join('')}<p style="color:#8e8e93;font-size:12px;margin-top:14px;text-align:center">同人虚构 · 不展示商品明细</p></div></div>`;bindShared();screen.querySelectorAll('[data-tx]').forEach(b=>b.onclick=()=>{const t=TX.find(x=>x.id===b.dataset.tx);screen.querySelector('#screen');detail(t);});};
