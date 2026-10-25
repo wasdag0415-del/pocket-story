@@ -334,7 +334,7 @@
   function chapterEnd() { return currentchat(); }
 
   function notebook() {
-    return wrap(`${head('备忘录','ktstory')}<div class="nf-scroll pc-thread"><h2>日本</h2><p>想去的地方先存着，等排练结束再看。</p><p>外套、充电器。</p><button data-export>导出剧情存档</button><label>导入剧情存档<input type="file" id="nf-import" accept="application/json" hidden></label><button data-restart-chapter>重新体验第一章</button></div>`);
+    return wrap(`${head('备忘录','ktstory')}<div class="nf-scroll pc-thread"><h2>日本</h2><p>想去的地方先存着，等排练结束再看。</p><p>外套、充电器。</p><label>导入剧情存档<input type="file" id="nf-import" accept="application/json" hidden></label><button data-restart-chapter>重新体验第一章</button></div>`);
   }
 
   function youtube() {

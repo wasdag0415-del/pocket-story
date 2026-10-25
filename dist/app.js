@@ -482,6 +482,19 @@ function renderSettings(){
       <strong>设置</strong>
     </header>
     <div class="ios-settings-body">
+      <div class="ios-settings-group">
+        <div class="ios-settings-item" data-setting-action="replay">
+          <span class="ios-settings-icon" style="background:#5856d6">↺</span>
+          <span class="ios-settings-label">剧情回溯</span>
+          <span class="ios-settings-arrow">›</span>
+        </div>
+        <div class="ios-settings-item" data-setting-action="archive">
+          <span class="ios-settings-icon" style="background:#ff9500">💾</span>
+          <span class="ios-settings-label">章节存档</span>
+          <span class="ios-settings-value">导出 / 导入</span>
+          <span class="ios-settings-arrow">›</span>
+        </div>
+      </div>
       <div class="ios-settings-profile">
         <div class="ios-settings-avatar">S</div>
         <div class="ios-settings-profile-info">
@@ -662,5 +675,16 @@ function compressImage(file,max=800){return new Promise((resolve,reject)=>{if(!f
 $('#avatar-upload').onchange=async e=>{const file=e.target.files[0],p=profile();if(!file)return;try{const old=p.avatar;p.avatar=await compressImage(file,300);if(persist()){toast('头像已更新');render('profile');}else p.avatar=old;}catch(err){toast(err.message);}e.target.value='';};
 $('#photo-upload').onchange=async e=>{const files=[...e.target.files];for(const f of files){if(state.photos.length>=20){toast('相册最多保存 20 张图片。');break;}try{const src=await compressImage(f,800);state.photos.push({id:uid(),name:f.name,src});if(!persist()){state.photos.pop();break;}}catch(err){toast(err.message);}}e.target.value='';render('album');};
 $('#home').onclick=()=>render('phonehome');$('#enter-chat').onclick=()=>render('lock');$('#customize').onclick=()=>{customApp=true;render('profile');};$('.wordmark').onclick=e=>{e.preventDefault();render('phonehome');};$('#about').onclick=()=>showModal('<h3>Pocket Story · the same blank</h3><p>第一章从福冈首场结束后的同担消息开始。玩家通过论坛、公开 INS、机场图和官方更新整理时间线，从一部被捡到的手机读取涩琪留下的线索。</p><p>真实公开素材会标注来源；论坛内容、聊天与私人关系推测属于同人虚构。第一章不会开放主人公私聊，第二章和十月过渡内容也暂未开放。</p><p>LYSN 自由聊天、相册上传、便签等原有功能保留；进度和聊天只保存在当前浏览器，不连接真实账号。</p>');$('#close-modal').onclick=()=>$('#modal').close();$('#modal').onclick=e=>{if(e.target===$('#modal'))$('#modal').close();};
-function tick(){const now=JapanStory.storyTime();$('#status-time').textContent=now;const clock=$('#home-clock');if(clock)clock.textContent=now;}render('lock');tick();setInterval(tick,15000);try{if(location.hash==='#dev-kkt'){render('ktstory');}if(location.hash==='#dev-rem'){render('reminders');}if(location.hash==='#dev-notes'){render('notebook');}if(location.hash==='#dev-chat'){render('ktstory');const _b=document.querySelector('[data-route=\"currentchat\"]');if(_b)_b.click();}}catch(e){}
+function tick(){const now=JapanStory.storyTime();$('#status-time').textContent=now;const clock=$('#home-clock');if(clock)clock.textContent=now;}render('lock');tick();setInterval(tick,15000);
+document.addEventListener('click',(e)=>{
+  const el=e.target.closest&&e.target.closest('[data-setting-action]');
+  if(!el)return;
+  if(el.dataset.settingAction==='replay'){render('timeline');}
+  if(el.dataset.settingAction==='archive'){
+    const keys=['pocket-flow-v1','pocket-notes-v1','pocket-reminders-v1','pocket-kkt-unread','pocket-notify-v1','pocket-side-chat-v1','pocket-unread-v1'];
+    const dump={};keys.forEach(k=>{try{dump[k]=JSON.parse(localStorage.getItem(k));}catch{}});
+    const blob=new Blob([JSON.stringify(dump,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='pocket-story-save.json';a.click();
+  }
+});try{if(location.hash==='#dev-kkt'){render('ktstory');}if(location.hash==='#dev-rem'){render('reminders');}if(location.hash==='#dev-notes'){render('notebook');}if(location.hash==='#dev-chat'){render('ktstory');const _b=document.querySelector('[data-route=\"currentchat\"]');if(_b)_b.click();}}catch(e){}
 }
