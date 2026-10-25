@@ -20,7 +20,7 @@
     officialUnlocked: false,
     officialSeen: false,
     chapterComplete: false,
-    chapter: { revision: 1, opening: false, read: [], invite: false, replied: false, step: 0, messages: [] }
+    chapter: { revision: 1, opening: false, read: [], invite: false, replied: false, step: 0, messages: [], sideMessages: {} }
   });
 
   function normalize(value) {
@@ -50,6 +50,16 @@
       .filter((item) => item && typeof item.text === 'string' && Number.isInteger(item.step))
       .slice(-24).map((item) => ({ step: item.step, text: item.text.trim().slice(0, 240) }))
       .filter((item) => item.text) : [];
+    const allowedThreads = ['manager', 'group', 'wendy', 'japan', 'styling', 'joy'];
+    next.chapter.sideMessages = {};
+    for (const thread of allowedThreads) {
+      const messages = storedChapter.sideMessages?.[thread];
+      next.chapter.sideMessages[thread] = Array.isArray(messages)
+        ? messages.filter((item) => item && typeof item.text === 'string')
+          .slice(-30).map((item) => ({ text: item.text.trim().slice(0, 240) }))
+          .filter((item) => item.text)
+        : [];
+    }
     next.chapter.opening = storedChapter.opening === true || next.chapter.step >= 1 || next.chapter.read.length > 0;
     next.chapter.invite = storedChapter.invite === true || next.chapter.opening;
     next.chapter.replied = storedChapter.replied === true || next.chapter.step >= 4;
@@ -125,11 +135,13 @@
       youtube, weverse, couplechat, groupchat, sidechat
     };
     context.screen.innerHTML = (views[route] || feed)();
+    const phoneScreen = context.screen.closest('.phone-screen');
+    if (phoneScreen) phoneScreen.dataset.storyRoute = route;
     const statusTime = root.document?.querySelector('#status-time');
     if (statusTime) statusTime.textContent = storyTime();
     bind();
     const scroll = context.screen.querySelector('.nf-scroll');
-    if (scroll) scroll.scrollTop = route === 'currentchat' ? scroll.scrollHeight : 0;
+    if (scroll) scroll.scrollTop = ['currentchat', 'managerchat', 'groupchat', 'sidechat'].includes(route) ? scroll.scrollHeight : 0;
   }
 
   function opening() { return currentchat(); }
@@ -157,6 +169,14 @@
 
   function bubbles(parts) {
     return parts.map(part=>`<div class="nf-chat-date">${esc(part.date)}</div>${part.lines.map(line=>`<div class="nf-chat-message ${line.role}"><small>${esc(line.role==='me'?'涩琪':part.who)}</small><p>${line.text==='［照片］'?'<button class="pc-attachment" data-route="sharedphotos">照片 · 原图暂缺</button>':esc(line.text)}</p></div>`).join('')}`).join('');
+  }
+  function sideMessageBubbles(thread) {
+    return (state.chapter.sideMessages?.[thread] || []).map((item) =>
+      `<div class="nf-chat-message me"><small>你 · 刚刚</small><p>${esc(item.text)}</p></div>`
+    ).join('');
+  }
+  function sideComposer(thread, placeholder = '输入消息') {
+    return `<form class="pc-composer" data-side-composer="${thread}"><button type="button" class="pc-composer-plus" aria-label="更多">＋</button><input maxlength="240" autocomplete="off" placeholder="${esc(placeholder)}" aria-label="KakaoTalk 消息" required><button aria-label="发送消息">↑</button></form>`;
   }
   function currentchat() {
     // 互动式聊天：一步步推进
@@ -188,7 +208,7 @@
     const hints=['回复“去按了吗？”','输入消息','回复“按完好点了吗？”','回复散步邀请','输入消息'];
     const composer = `<form id="pc-story-composer" class="pc-composer"><input id="pc-story-input" maxlength="240" autocomplete="off" placeholder="${hints[step]||'输入消息'}" aria-label="KakaoTalk 消息" required><button aria-label="发送消息">↑</button></form>`;
     
-    return wrap(`<header class="nf-kkt-chat-head"><button data-route="ktstory" aria-label="返回">‹</button><strong>组长老师</strong><span>⌕　☰</span></header><div class="nf-scroll nf-chat-scroll">${bubbles([{date:'9月19日 · 首场结束以后',who:'组长老师',lines}])}</div>${composer}`,'nf-story-chat');
+    return wrap(`<header class="nf-kkt-chat-head"><button data-route="ktstory" aria-label="返回">‹</button><strong>组长老师</strong><span>⌕　☰</span></header><div class="nf-scroll nf-chat-scroll">${bubbles([{date:'9月19日 · 首场结束以后',who:'组长老师',lines}])}</div>${composer}`,'nf-story-chat kkt-conversation');
   }
   function sharedphotos() {
     if(!state.chapter.opening) return currentchat();
@@ -197,15 +217,15 @@
   function historychat() {
     if(!state.chapter.opening || eventIndex>state.chapter.read.length) return currentchat();
     const item=root.PocketChapterEvents[eventIndex];
-    return wrap(`${head('组长老师','currentchat','<button data-route="sharedphotos">▧</button>')}<div class="nf-scroll nf-chat-scroll">${item.parts.some(p=>p.who==='manager')?`<section class="pc-context"><strong>manager</strong>${bubbles(item.parts.filter(p=>p.who==='manager'))}</section>`:''}${bubbles(item.parts.filter(p=>p.who==='组长老师'))}<div class="pc-history-nav"><button data-event-read="${eventIndex}">${eventIndex===6?'返回当前聊天':state.chapter.read.includes(item.id)?'继续查看后面的记录 →':'继续往后读 →'}</button></div></div><div class="pc-history-tabs">${root.PocketChapterEvents.map((e,i)=>i<=state.chapter.read.length?`<button data-history="${i}" class="${i===eventIndex?'active':''}">${esc(e.label)}</button>`:'').join('')}</div>`,'nf-story-chat');
+    return wrap(`${head('组长老师','currentchat','<button data-route="sharedphotos">▧</button>')}<div class="nf-scroll nf-chat-scroll">${item.parts.some(p=>p.who==='manager')?`<section class="pc-context"><strong>manager</strong>${bubbles(item.parts.filter(p=>p.who==='manager'))}</section>`:''}${bubbles(item.parts.filter(p=>p.who==='组长老师'))}<div class="pc-history-nav"><button data-event-read="${eventIndex}">${eventIndex===6?'返回当前聊天':state.chapter.read.includes(item.id)?'继续查看后面的记录 →':'继续往后读 →'}</button></div></div><div class="pc-history-tabs">${root.PocketChapterEvents.map((e,i)=>i<=state.chapter.read.length?`<button data-history="${i}" class="${i===eventIndex?'active':''}">${esc(e.label)}</button>`:'').join('')}</div>`,'nf-story-chat kkt-conversation');
   }
   function managerchat() {
     const parts=root.PocketChapterEvents.flatMap((e,i)=>i<=state.chapter.read.length?e.parts.filter(p=>p.who==='manager'):[]);
-    return wrap(`${head('manager','ktstory')}<div class="nf-scroll nf-chat-scroll">${bubbles(parts)}</div>`,'nf-kkt-app');
+    return wrap(`${head('manager','ktstory')}<div class="nf-scroll nf-chat-scroll">${bubbles(parts)}${sideMessageBubbles('manager')}</div>${sideComposer('manager', '发送消息给 manager')}`,'nf-story-chat kkt-conversation');
   }
 
   function groupchat() {
-    return wrap(`${head('Red Velvet', 'ktstory')}<div class='nf-scroll nf-chat-scroll'><div class='nf-chat-date'>9月14日</div><div class='nf-chat-message them'><small>Wendy · 10:28</small><p>涩琪先出发了吗？</p></div><div class='nf-chat-message me'><small>你 · 10:31</small><p>嗯，先过去排练。</p></div><div class='nf-chat-message them'><small>Yeri · 10:32</small><p>到日本帮我看便利店新品！！</p></div><div class='nf-chat-message them'><small>Joy · 10:34</small><p>她先落地再说ㅋㅋ</p></div><div class='nf-chat-date'>9月19日 · 福冈首场结束后</div><div class='nf-chat-message them'><small>Wendy · 21:12</small><p>首场顺利结束了吗？</p></div><div class='nf-chat-message them'><small>Joy · 21:13</small><p>我刚看到日本账号发预告了ㅠㅠ</p></div><div class='nf-chat-message them'><small>Yeri · 21:13</small><p>结束以后记得吃饭！！</p></div><div class='nf-chat-message them'><small>组长老师 · 21:14</small><p>刚结束，大家辛苦了。</p></div><div class='nf-chat-message me'><small>你 · 21:14</small><p>结束了ㅎㅎ</p></div><div class='nf-chat-message them'><small>Wendy · 21:15</small><p>先休息一下，晚点再聊</p></div><div class='nf-chat-message them'><small>Joy · 21:15</small><p>让她们先喘口气吧ㅋㅋ</p></div><div class='nf-chat-message them'><small>Yeri · 21:16</small><p>合照发群里！</p></div><div class='nf-chat-message them'><small>组长老师 · 21:16</small><p>等官方发。</p></div><div class='nf-chat-message me'><small>你 · 21:17</small><p>嗯。</p></div></div><div class='nf-story-chat-tools'><button data-route='ktstory'>消息列表</button></div>`, 'nf-story-chat');
+    return wrap(`${head('Red Velvet', 'ktstory')}<div class='nf-scroll nf-chat-scroll'><div class='nf-chat-date'>9月14日</div><div class='nf-chat-message them'><small>Wendy · 10:28</small><p>涩琪先出发了吗？</p></div><div class='nf-chat-message me'><small>你 · 10:31</small><p>嗯，先过去排练。</p></div><div class='nf-chat-message them'><small>Yeri · 10:32</small><p>到日本帮我看便利店新品！！</p></div><div class='nf-chat-message them'><small>Joy · 10:34</small><p>她先落地再说ㅋㅋ</p></div><div class='nf-chat-date'>9月19日 · 福冈首场结束后</div><div class='nf-chat-message them'><small>Wendy · 21:12</small><p>首场顺利结束了吗？</p></div><div class='nf-chat-message them'><small>Joy · 21:13</small><p>我刚看到日本账号发预告了ㅠㅠ</p></div><div class='nf-chat-message them'><small>Yeri · 21:13</small><p>结束以后记得吃饭！！</p></div><div class='nf-chat-message them'><small>组长老师 · 21:14</small><p>刚结束，大家辛苦了。</p></div><div class='nf-chat-message me'><small>你 · 21:14</small><p>结束了ㅎㅎ</p></div><div class='nf-chat-message them'><small>Wendy · 21:15</small><p>先休息一下，晚点再聊</p></div><div class='nf-chat-message them'><small>Joy · 21:15</small><p>让她们先喘口气吧ㅋㅋ</p></div><div class='nf-chat-message them'><small>Yeri · 21:16</small><p>合照发群里！</p></div><div class='nf-chat-message them'><small>组长老师 · 21:16</small><p>等官方发。</p></div><div class='nf-chat-message me'><small>你 · 21:17</small><p>嗯。</p></div>${sideMessageBubbles('group')}</div>${sideComposer('group', '发送消息到群聊')}`, 'nf-story-chat kkt-conversation');
   }
 
   function sidechat() {
@@ -216,7 +236,7 @@
       joy: { name: 'Joy', body: `<div class='nf-chat-date'>9月18日</div><div class='nf-chat-message them'><small>Joy · 22:01</small><p>便利店新品呢？</p></div><div class='nf-chat-message me'><small>你 · 22:05</small><p>没来得及去。</p></div><div class='nf-chat-message them'><small>Joy · 22:05</small><p>不是说好要拍给我看吗ㅋㅋ</p></div><div class='nf-chat-message me'><small>你 · 22:08</small><p>后面还有时间。</p></div><div class='nf-chat-message them'><small>Joy · 22:09</small><p>行程很长，别第一周就把自己累坏了。</p></div>` }
     };
     const chat = chats[kktThread] || chats.wendy;
-    return wrap(`${head(chat.name, 'ktstory')}<div class='nf-scroll nf-chat-scroll'>${chat.body}</div><div class='nf-story-chat-tools'><button data-route='ktstory'>消息列表</button></div>`, 'nf-story-chat');
+    return wrap(`${head(chat.name, 'ktstory')}<div class='nf-scroll nf-chat-scroll'>${chat.body}${sideMessageBubbles(kktThread)}</div>${sideComposer(kktThread, `发送消息给 ${chat.name}`)}`, 'nf-story-chat kkt-conversation');
   }
 
   function isAvailable(post) {
@@ -390,6 +410,18 @@
       save();
       render();
     };
+    screen.querySelectorAll('[data-side-composer]').forEach((form) => form.onsubmit = (event) => {
+      event.preventDefault();
+      const input = form.querySelector('input');
+      const text = input?.value.trim();
+      const thread = form.dataset.sideComposer;
+      if (!text || !thread) return;
+      if (!state.chapter.sideMessages[thread]) state.chapter.sideMessages[thread] = [];
+      state.chapter.sideMessages[thread].push({ text: text.slice(0, 240) });
+      state.chapter.sideMessages[thread] = state.chapter.sideMessages[thread].slice(-30);
+      save();
+      render();
+    });
     screen.querySelectorAll('[data-photo-detail]').forEach(b=>b.onclick=()=>{screen.querySelector('#pc-photo-detail').hidden=false;});
     screen.querySelectorAll('[data-history]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.history);if(i<=state.chapter.read.length){eventIndex=i;go('historychat');}});
     screen.querySelectorAll('[data-event-read]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.eventRead);if(i===state.chapter.read.length)state.chapter.read.push(root.PocketChapterEvents[i].id);save();if(i===6){if(!state.chapter.invite){state.chapter.invite=true;save();context.toast('组长老师：按完好点了吗？');}go('currentchat');}else{eventIndex=i+1;go('historychat');}});
