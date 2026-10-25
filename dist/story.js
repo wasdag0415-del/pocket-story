@@ -124,7 +124,8 @@
   function opening() { return currentchat(); }
 
   function ktstory() {
-    return wrap(`<header class='nf-friends-head'><strong>好友</strong><span>⌕　♙＋　⚙</span></header><div class='nf-scroll nf-friends-list'><section class='nf-my-profile'><span class='nf-default-avatar'></span><strong>2sides</strong><button>Profile ＋</button></section><h3>Channel <span>⌃</span></h3><section class='nf-channel-row'><span class='nf-channel-icon'>Ch</span><strong>Channel</strong><b>›</b></section><h3>好友 6 <span>⌃</span></h3><button class='nf-friend-row nf-kkt-pinned' data-route='currentchat'><span class='nf-default-avatar'></span><span><strong>组长老师 <em class='nf-kkt-pin'>置顶</em></strong><small>${state.chapter.replied?'就附近，不走远':state.chapter.invite?'按完好点了吗？':'去按了吗？'}</small></span>${badge()?'<i>1</i>':''}</button><button class='nf-friend-row' data-kkt-thread='wendy'><span class='nf-kkt-avatar'>W</span><span><strong>Wendy</strong><small>到酒店以后跟我说一声</small></span></button><button class='nf-friend-row' data-route='groupchat'><span class='nf-kkt-avatar'>RV</span><span><strong>Red Velvet</strong><small>Yeri：合照发群里！</small></span></button><button class='nf-friend-row' data-route='managerchat'><span class='nf-kkt-avatar'>M</span><span><strong>manager</strong><small>明天集合提前十五分钟。</small></span></button><button class='nf-friend-row' data-kkt-thread='joy'><span class='nf-kkt-avatar'>J</span><span><strong>Joy</strong><small>不是说好要拍给我看吗ㅋㅋ</small></span></button></div><nav class='nf-kkt-tabs'><button class='active'>♟<small>好友</small></button><button>●<small>聊天</small></button><button>☎<small>通话</small></button><button>•••<small>更多</small></button></nav>`, 'nf-kkt-app nf-kkt-friends');
+    ensureUnread();
+    return wrap(`<header class='nf-friends-head'><strong>好友</strong><span>⌕　♙＋　⚙</span></header><div class='nf-scroll nf-friends-list'><section class='nf-my-profile'><span class='nf-default-avatar'></span><strong>2sides</strong><button>Profile ＋</button></section><h3>Channel <span>⌃</span></h3><section class='nf-channel-row'><span class='nf-channel-icon'>Ch</span><strong>Channel</strong><b>›</b></section><h3>好友 6 <span>⌃</span></h3><button class='nf-friend-row nf-kkt-pinned' data-route='currentchat'><span class='nf-default-avatar'></span><span><strong>组长老师 <em class='nf-kkt-pin'>置顶</em></strong><small>${state.chapter.replied?'就附近，不走远':state.chapter.invite?'按完好点了吗？':'去按了吗？'}</small></span>${unreadOf('current')?'<i>1</i>':''}</button><button class='nf-friend-row' data-kkt-thread='wendy'><span class='nf-kkt-avatar'>W</span><span><strong>Wendy</strong><small>到酒店以后跟我说一声</small></span>${unreadOf('wendy')?'<i>1</i>':''}</button><button class='nf-friend-row' data-route='groupchat'><span class='nf-kkt-avatar'>RV</span><span><strong>Red Velvet</strong><small>Yeri：合照发群里！</small></span></button><button class='nf-friend-row' data-route='managerchat'><span class='nf-kkt-avatar'>M</span><span><strong>manager</strong><small>明天集合提前十五分钟。</small></span></button><button class='nf-friend-row' data-kkt-thread='joy'><span class='nf-kkt-avatar'>J</span><span><strong>Joy</strong><small>不是说好要拍给我看吗ㅋㅋ</small></span>${unreadOf('joy')?'<i>1</i>':''}</button></div><nav class='nf-kkt-tabs'><button class='active'>♟<small>好友</small></button><button>●<small>聊天</small></button><button>☎<small>通话</small></button><button>•••<small>更多</small></button></nav>`, 'nf-kkt-app nf-kkt-friends');
   }
 
 
@@ -198,6 +199,15 @@
     return wrap(`${head('Red Velvet', 'ktstory')}<div class='nf-scroll nf-chat-scroll'><div class='nf-chat-date'>9月14日</div><div class='nf-chat-message them'><small>Wendy · 10:28</small><p>涩琪先出发了吗？</p></div><div class='nf-chat-message me'><small>你 · 10:31</small><p>嗯，先过去排练。</p></div><div class='nf-chat-message them'><small>Yeri · 10:32</small><p>到日本帮我看便利店新品！！</p></div><div class='nf-chat-message them'><small>Joy · 10:34</small><p>她先落地再说ㅋㅋ</p></div><div class='nf-chat-date'>9月19日 · 福冈首场结束后</div><div class='nf-chat-message them'><small>Wendy · 21:12</small><p>首场顺利结束了吗？</p></div><div class='nf-chat-message them'><small>Joy · 21:13</small><p>我刚看到日本账号发预告了ㅠㅠ</p></div><div class='nf-chat-message them'><small>Yeri · 21:13</small><p>结束以后记得吃饭！！</p></div><div class='nf-chat-message them'><small>组长老师 · 21:14</small><p>刚结束，大家辛苦了。</p></div><div class='nf-chat-message me'><small>你 · 21:14</small><p>结束了ㅎㅎ</p></div><div class='nf-chat-message them'><small>Wendy · 21:15</small><p>先休息一下，晚点再聊</p></div><div class='nf-chat-message them'><small>Joy · 21:15</small><p>让她们先喘口气吧ㅋㅋ</p></div><div class='nf-chat-message them'><small>Yeri · 21:16</small><p>合照发群里！</p></div><div class='nf-chat-message them'><small>组长老师 · 21:16</small><p>等官方发。</p></div><div class='nf-chat-message me'><small>你 · 21:17</small><p>嗯。</p></div></div><div class='nf-story-chat-tools'><button data-route='ktstory'>消息列表</button></div>`, 'nf-story-chat');
   }
 
+  const UNREAD_KEY = 'pocket-kkt-unread';
+  function unreadMap() { try { return JSON.parse(root.localStorage.getItem(UNREAD_KEY)) || {}; } catch { return {}; } }
+  function unreadSet(map) { try { root.localStorage.setItem(UNREAD_KEY, JSON.stringify(map)); } catch {} }
+  function unreadOf(id) { const m = unreadMap(); return m[id] === true; }
+  function markRead(id) { const m = unreadMap(); if (m[id]) { m[id] = false; unreadSet(m); } }
+  function ensureUnread() {
+    const m = unreadMap();
+    if (!('__init' in m)) { m.__init = true; m.current = true; m.wendy = true; m.joy = true; unreadSet(m); }
+  }
   function sidechat() {
     const chats = {
       wendy: { name: 'Wendy', body: `<div class='nf-chat-date'>9月14日</div><div class='nf-chat-message them'><small>Wendy · 18:06</small><p>安全到了吗？</p></div><div class='nf-chat-message me'><small>你 · 18:07</small><p>到了，在去酒店。</p></div><div class='nf-chat-message them'><small>Wendy · 18:08</small><p>吃饭了吗？</p></div><div class='nf-chat-message me'><small>你 · 18:08</small><p>飞机上吃了一点。</p></div><div class='nf-chat-message them'><small>Wendy · 18:09</small><p>这不算。到酒店以后跟我说一声。</p></div><div class='nf-chat-date'>9月19日</div><div class='nf-chat-message them'><small>Wendy · 16:40</small><p>彩排还好吗？</p></div><div class='nf-chat-message me'><small>你 · 16:47</small><p>嗯，没问题。</p></div>` },
@@ -363,7 +373,7 @@
     screen.querySelectorAll('[data-yt-channel]').forEach(b=>b.onclick=()=>{youtubeChannel=b.dataset.ytChannel;youtubeVideo='';render();});
     screen.querySelectorAll('[data-yt-video]').forEach(b=>b.onclick=()=>{youtubeVideo=b.dataset.ytVideo;render();});
     screen.querySelectorAll('[data-yt-back]').forEach(b=>b.onclick=()=>{youtubeVideo='';render();});
-    screen.querySelectorAll('[data-kkt-thread]').forEach(b=>b.onclick=()=>{kktThread=b.dataset.kktThread;go('sidechat');});
+    screen.querySelectorAll('[data-kkt-thread]').forEach(b=>b.onclick=()=>{kktThread=b.dataset.kktThread;markRead(kktThread);go('sidechat');});
     const composer=screen.querySelector('#pc-story-composer');
     if(composer) composer.onsubmit=(event)=>{
       event.preventDefault();
