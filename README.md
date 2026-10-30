@@ -1,137 +1,137 @@
 # Pocket Story · the same blank
 
-**一部以模拟手机为叙事界面的虚构互动故事。**
+**A fictional interactive story told through a simulated smartphone.**
 
-《the same blank》以姜涩琪与裴珠泫为人物原型，透过聊天、工作记录、公开动态、照片与逐步出现的论坛讨论，呈现两个人在亲密日常、密集工作和沟通落差之间的关系变化。
+*the same blank* is a fictional fan work featuring characters based on Kang Seulgi and Bae Joohyun. Through chats, work records, public posts, photographs, and forum discussions that appear gradually, the story explores how two people navigate intimacy, demanding schedules, and growing gaps in communication.
 
-> **当前剧情基准：V34（2026-10-26）**
+> **Current story baseline: V34 (2026-10-26)**
 >
-> 本 README 介绍的是目前确认的创作大纲，不代表大纲中的所有节点都已经接入当前网页版本。剧情会逐个拆分、创作和测试；旧版日本巡演开场、论坛选择与多结局方案不再代表现行大纲。
+> This README describes the currently approved story outline. It does not mean that every outlined scene has already been implemented in the current web build. The story is being written, reviewed, and tested one self-contained node at a time. Earlier concepts built around opening with the Japan tour, player-selected forum interactions, or multiple player-determined endings are no longer the current direction.
 
-## 故事大纲
+## Story Outline
 
-故事从**八月某次排练结束后的 KakaoTalk 对话**开始，而不是从日本巡演论坛或明显的关系异常开始。
+The story opens with a **KakaoTalk conversation after a rehearsal in August**—not with a forum investigation during the Japan tour or an obvious sign of relationship trouble.
 
-### 1. 八月：她们原本的日常
+### 1. August: Their Everyday Life
 
-两个人分开居住，却几乎每天因为排练和工作见面。故事先呈现热恋时期自然、亲密、熟悉的相处方式，让读者看到她们平时如何聊天、分享生活、照顾彼此，以及在工作间隙如何相处。
+They live separately, but see each other almost every day through rehearsals and work. The opening first establishes the natural, intimate familiarity of a happy period in their relationship: how they chat, share small parts of their day, look after each other, and spend time together between work commitments.
 
-当前已确认的开场顺序：
+The currently approved opening sequence is:
 
-1. 第一晚：排练结束后的 KKT 对话。
-2. 第二天：排练日常。
-3. 工作群里的安排与交流。
-4. 成员们收工后的闲聊。
-5. **8 月 2 日见面会**。
-6. 从这些日常继续铺开八月的亲密生活。
+1. The first evening: a KKT conversation after rehearsal.
+2. The following day: an ordinary rehearsal day.
+3. Plans and conversations in the work group chat.
+4. Casual conversations among the members after work.
+5. **The fan meeting on August 2.**
+6. Further moments from their close, everyday life throughout August.
 
-### 2. 工作变得越来越密集
+### 2. Work Becomes More Demanding
 
-随着排练、活动和个人行程增加，两个人依然在意彼此，也仍然会见面、工作和照顾对方。但高强度工作带来的疲惫，逐渐影响她们表达和沟通的能力。
+As rehearsals, activities, and individual schedules become increasingly intense, they still care about each other. They continue to meet, work together, and show concern for one another. However, the exhaustion caused by their workload gradually affects how well they can express themselves and communicate.
 
-故事不把关系变化写成突然翻脸，也不预设某一方单方面冷落另一方。重点是：两个人都在努力处理自己的状态，却逐渐接不上对方真正想表达的意思。
+Their relationship does not suddenly turn hostile, and the story does not frame one person as simply neglecting the other. Both are trying to manage their own circumstances, yet they gradually become less able to understand what the other is really trying to say.
 
-### 3. 日本行程：信息差开始出现
+### 3. The Japan Schedule: Gaps in Communication Emerge
 
-进入日本行程后，出现一个具体的时间与沟通落差：
+During the Japan schedule, a specific gap in timing and communication becomes part of the story:
 
-- 涩琪先行前往日本，没有提前告诉珠泫。
-- 两天后，珠泫也抵达日本，但没有直接通知涩琪。
-- 涩琪是通过 Manager 转达，才知道珠泫已经抵达。
+- Seulgi travels to Japan first without telling Joohyun in advance.
+- Two days later, Joohyun also arrives in Japan but does not contact Seulgi directly.
+- Seulgi only learns that Joohyun has arrived through a message relayed by their manager.
 
-这件事是关系误会逐渐显现的一部分，不应被夸大成分手、背叛或严重争吵。后续仍需通过工作安排、聊天内容和人物行动，逐步呈现双方各自的处境。
+This is one part of how misunderstandings gradually become visible. It should not be exaggerated into a breakup, betrayal, or major confrontation. Their respective circumstances should continue to emerge through work arrangements, conversations, and actions.
 
-### 4. 论坛随故事逐步出现
+### 4. Forum Discussions Appear Gradually
 
-论坛不是故事的冷开场，也不是一个提前摆满全部线索的解谜页面。
+The forum is neither the opening scene nor a puzzle page filled with every clue from the start.
 
-随着聊天和事件推进，相关帖子、评论与外部观察才逐步进入玩家视野。论坛中的人只能根据自己看见的公开信息讨论，可能判断正确，也可能误读；论坛不能替作者揭示私人真相。
+As conversations and events unfold, related posts, comments, and outside observations gradually become available to the player. People on the forum can only discuss what they have publicly seen. They may interpret things correctly or misunderstand them; the forum must never reveal private truths on behalf of the author.
 
-读者需要把不同应用里的碎片放在一起理解，而不是依靠某一条帖子或某一段解释得到完整答案。
+Readers piece together fragments across different apps rather than receiving the full explanation from a single post or exposition dump.
 
-## 核心关系与叙事原则
+## Relationship and Narrative Principles
 
-- **先建立亲密，再呈现变化。** 不要从冷淡、争执或单方面追逐开始。
-- **矛盾来自沟通落差。** 高强度工作、疲惫、顾虑和表达不及时共同影响关系，不把任何一方写成唯一的问题来源。
-- **两个人都要有主动性。** 关心不能只由一方承担；即使出现距离，也要保留双方真实的在意与行动。
-- **不替人物解释一切。** 通过聊天、时间、行程、照片、生活细节和行动呈现情绪，不让角色突然说出完整的主题总结。
-- **公开信息不等于私人事实。** 舞台、机场、社交平台和粉丝讨论不能单独证明私人关系或人物心理。
+- **Establish intimacy before showing change.** Do not begin with coldness, conflict, or one-sided pursuit.
+- **The tension comes from communication gaps.** Heavy workloads, exhaustion, hesitation, and delayed expression affect the relationship. Neither person should be framed as the sole source of the problem.
+- **Both characters must have agency.** Care and effort should not come from only one side. Even when distance emerges, preserve the genuine concern and actions of both people.
+- **Do not explain everything for the characters.** Convey emotion through chats, timing, schedules, photographs, everyday details, and actions. Avoid having characters suddenly summarize the story's themes.
+- **Public information is not private fact.** Stage interactions, airport appearances, social media posts, and fan discussions cannot independently prove the nature of a private relationship or a person's inner thoughts.
 
-## 叙事形式与应用
+## Narrative Format and Apps
 
-Pocket Story 保留模拟手机的沉浸式体验，以手机中的应用和记录承载故事。现有界面方向包括黑底沉浸式手机、原生桌面与聊天列表，以及 Pann 风格论坛、YouTube 页面和 LYSN 订阅卡片等。
+Pocket Story uses a simulated smartphone as its immersive narrative environment. The existing visual direction includes a dark, immersive phone experience, a native-style home screen and chat list, a Pann-inspired forum, YouTube pages, and LYSN-style subscription chat cards.
 
-不同应用承担不同的信息职责：
+Each app has a distinct narrative role:
 
-- **KakaoTalk（KKT）：** 呈现作者预先写定的聊天与日常互动。
-- **论坛（Pann 风格）：** 呈现外部观察、讨论、误读与不同观点；内容随故事进展逐步出现。
-- **Instagram：** 提供有来源和日期的公开内容档案。
-- **相册、日历、地图、备忘录等：** 记录照片、时间、地点、工作安排与生活痕迹。
-- **YouTube：** 补充公开舞台、频道和视频内容。
-- **LYSN：** 保留独立的自定义人设与自由聊天功能；它与主线剧情分开，不作为主线证据，也不改变主线人物行为。
+- **KakaoTalk (KKT):** Presents prewritten conversations and everyday interactions.
+- **Forum (Pann-inspired):** Presents outside observations, discussions, misunderstandings, and differing opinions. Content appears gradually as the story progresses.
+- **Instagram:** Provides a dated archive of sourced public posts.
+- **Photos, Calendar, Maps, Notes, and other utilities:** Record images, time, places, work schedules, and traces of everyday life.
+- **YouTube:** Supplements the story with public performances, channel pages, and videos.
+- **LYSN:** Remains a separate space for customizable personas and free chat. It is kept apart from the main story, is not treated as evidence for the main plot, and does not change the characters' actions in the main narrative.
 
-### 玩家如何参与
+### How the Player Participates
 
-这是**作者预先创作剧情、玩家通过手机探索发现**的叙事方式。
+The narrative is **written in advance by the author and discovered by the player through exploration of the phone**.
 
-玩家可以按自己的顺序查看当前开放的聊天、应用和记录；探索顺序可以不同，但玩家的自由输入或回复不会替人物作出决定，也不会改变主线事件、人物关系或故事结果。
+Players can explore the currently available chats, apps, and records in their own order. The order of discovery may vary, but free-text input or player replies do not make decisions on behalf of the characters and do not change the main events, relationships, or story outcomes.
 
-剧情以独立节点组织。每个节点先写完整、单独测试，再与前后节点核对连续性。剧情内容不依赖某一版状态机或 UI 实现。
+The story is organized into independent narrative nodes. Each node is written in full and tested on its own before its continuity with neighboring nodes is reviewed. Story content is not tied to any particular version of the state machine or user interface.
 
-## 虚构与现实素材边界
+## Fiction and Real-World Material
 
-本作品是虚构同人创作：
+This project is a fictional fan work:
 
-- 私人聊天、人物内心、匿名帖子、私人行程细节与剧情事件均为虚构内容。
-- 公开照片、公开社交内容和活动信息仅作为有来源的时间、地点或视觉参考。
-- 不将公开影像、舞台互动或粉丝猜测包装成现实私人关系的证据。
-- 不连接真实账号、真实艺人联系人或真实支付服务。
+- Private conversations, inner thoughts, anonymous posts, private schedule details, and story events are fictional.
+- Public photographs, public social media posts, and activity information are used only as sourced references for public timelines, locations, or visual context.
+- Public footage, stage interactions, and fan speculation must not be presented as evidence of a real private relationship.
+- The project does not connect to real accounts, real artist contacts, or real payment services.
 
-## 本地运行与测试
+## Local Development and Testing
 
-项目为静态 HTML / CSS / JavaScript，无需构建步骤或运行时服务端。
+The project is a static HTML / CSS / JavaScript site. It requires no build step or runtime server.
 
-在仓库根目录启动本地 HTTP 服务：
+Start a local HTTP server from the repository root:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-然后打开：
+Then open:
 
 ```text
 http://localhost:8000/
 ```
 
-运行测试：
+Run the tests:
 
 ```bash
 npm install
 npm test
 ```
 
-根目录的 `index.html` 是 GitHub Pages 入口，会加载 `dist/` 中的应用文件。GitHub Pages 通过 `.github/workflows/pages.yml` 发布；该工作流在 `main` 分支更新时运行，也支持手动触发。
+The root `index.html` is the GitHub Pages entry point and loads the application files from `dist/`. GitHub Pages is published through `.github/workflows/pages.yml`. The workflow runs when the `main` branch is updated and can also be triggered manually.
 
-## 仓库素材与来源
+## Repository Assets and Sources
 
-### 机场公开照片
+### Public Airport Photographs
 
-仓库保留两张 **2026-09-28** 的公开机场照片，来源为 **Newsen / 지수진**。原图完整保留，包含原始水印；它们是第三方编辑摄影素材，不属于项目自有或生成的图片。
+The repository contains two public airport photographs dated **2026-09-28**, sourced from **Newsen / Ji Su-jin (지수진)**. The original images are preserved with their original watermarks. They are third-party editorial photographs, not assets created or generated by this project.
 
 - `dist/assets/aseul-airport-20260928-irene.jpg` — https://www.newsen.com/news_view.php?code=100100&uid=202609281857343510
 - `dist/assets/aseul-airport-20260928-seulgi.jpg` — https://www.newsen.com/news_view.php?code=100600&uid=202609281934203510
 
-### Instagram 公开内容档案
+### Instagram Public-Content Archive
 
-仓库中的 Instagram 内容是按日期整理的公开资料档案，不是实时或完整的账号镜像。现有资料包含 `hi_sseulgi` 与 `renebaebae` 两个公开内容档案；图片、日期和来源链接保存在对应数据文件中。
+The Instagram material in this repository is a date-organized archive of public references, not a live feed or a complete mirror of either account. The current archive includes public-content records for `hi_sseulgi` and `renebaebae`. Images, dates, and source links are stored in the corresponding data files.
 
-已整理的来源包括：
+Collected sources include:
 
-- 2026-09-16：日本专辑更新与两条餐饮 Stories，来源：https://theqoo.net/seulgi/4361583608?category=1827551682
-- 2025-05-30：包含 Irene 图片的 Seulgi 更新，来源：https://theqoo.net/seulgi/4012428821
-- 2025-06-12、2025-06-23：造型 / 后台更新与 BALANCE 回顾，来源：https://theqoo.net/seulgi/4018568127
-- 2025-03-30：`by.sseulgi` 发布的 Irene 胶片照片，文字与来源索引：https://www.fanforum.com/f509/baechu-%7Birene%7D-9-~-solo-irene-finally-coming-year-63278447/index10.html
-- 2023-11-19：Irene 更新及 Seulgi 的公开评论索引：https://theqoo.net/seulgi/3022087917
-- 2023-10-26：Irene / Seulgi 更新索引：https://kpopping.com/kpics/231026-Red-Velvet-Irene-Instagram-Update-with-Seulgi
+- 2026-09-16: Japan album updates and two food-related Stories. Source: https://theqoo.net/seulgi/4361583608?category=1827551682
+- 2025-05-30: A Seulgi update containing an image of Irene. Source: https://theqoo.net/seulgi/4012428821
+- 2025-06-12 and 2025-06-23: Styling / backstage updates and a BALANCE retrospective. Source: https://theqoo.net/seulgi/4018568127
+- 2025-03-30: Film photographs of Irene posted by `by.sseulgi`; text and source index: https://www.fanforum.com/f509/baechu-%7Birene%7D-9-~-solo-irene-finally-coming-year-63278447/index10.html
+- 2023-11-19: An Irene update and an index of Seulgi's public comment. Source: https://theqoo.net/seulgi/3022087917
+- 2023-10-26: An index of Irene / Seulgi updates. Source: https://kpopping.com/kpics/231026-Red-Velvet-Irene-Instagram-Update-with-Seulgi
 
-较早的两条记录只提供文字索引与来源链接，不使用替代图片或虚构原始文案。公开素材不构成私人关系的证明。所有第三方素材应保留原始来源、署名与使用边界。
+The two older entries above provide text indexes and source links only; no substitute images or fabricated original captions are used. Public material does not establish private relationship facts. All third-party material must retain its original source, attribution, and usage boundaries.
