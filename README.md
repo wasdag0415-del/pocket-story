@@ -1,58 +1,137 @@
-# Pann · 日本巡演第二夜
+# Pocket Story · the same blank
 
-A fictional fan-work exploration game about Kang Seulgi and Bae Juhyun, inside the existing simulated phone. All dialogue, tour incidents, anonymous posts and media reconstructions are invented. Nothing connects to real accounts or celebrity contacts.
+**一部以模拟手机为叙事界面的虚构互动故事。**
 
-## Run and publish
+《the same blank》以姜涩琪与裴珠泫为人物原型，透过聊天、工作记录、公开动态、照片与逐步出现的论坛讨论，呈现两个人在亲密日常、密集工作和沟通落差之间的关系变化。
 
-Buildless static HTML/CSS/JS with no build step or runtime dependencies. The current ChatGPT Site is public and deploys `dist/` using `.openai/hosting.json`.
+> **当前剧情基准：V34（2026-10-26）**
+>
+> 本 README 介绍的是目前确认的创作大纲，不代表大纲中的所有节点都已经接入当前网页版本。剧情会逐个拆分、创作和测试；旧版日本巡演开场、论坛选择与多结局方案不再代表现行大纲。
 
-The repository-root `index.html` is the GitHub Pages entry file. It loads the complete application from `dist/`, so the repository has the familiar `index.html` structure without duplicating the 36 MB image collection. GitHub Pages publication is defined in `.github/workflows/pages.yml`. Push the repository to GitHub with `main` as its default branch, then select **GitHub Actions** as the Pages source in the repository settings. Every push to `main` publishes the site; the workflow can also be run manually.
+## 故事大纲
 
-The source code may be opened under the repository owner's chosen license. Photographs in `dist/assets/` are third-party editorial or archived public images and are not covered by a source-code license; preserve their credits and source links.
+故事从**八月某次排练结束后的 KakaoTalk 对话**开始，而不是从日本巡演论坛或明显的关系异常开始。
 
-## Episode 1
+### 1. 八月：她们原本的日常
 
-Start in the fictional Pann-style forum as an ordinary reader on their own phone. The only two forum categories are fandom discussion and relationship advice. Read a full curtain-call sequence and the anonymous older-partner advice post before comparing their details. The conflict is intentionally small: one person avoids the conversation because she fears becoming a burden, while the other is too exhausted to keep talking or guess what the silence means. A first forum decision unlocks a third-night eyewitness thread and new messages from fellow reader 小满. KakaoTalk then unlocks an explicitly fictional chapter replay of the protagonists' conversation, separate from the player's own phone and real accounts. LYSN is the customizable character-chat area and retains the existing local personas, group chats, voice messages and simulated transfers. Instagram remains public-source material; anonymous forum accounts remain unconfirmed. Stable evidence IDs and saved chat data are retained for compatibility.
+两个人分开居住，却几乎每天因为排练和工作见面。故事先呈现热恋时期自然、亲密、熟悉的相处方式，让读者看到她们平时如何聊天、分享生活、照顾彼此，以及在工作间隙如何相处。
 
-Narrative evidence uses labeled HTML/CSS diagrams and text records. The main thread additionally contains credited real airport photographs as atmosphere references, separate from the fictional storyline. LYSN and Weverse are coherent additional story surfaces. The phone's original configurable contacts, local simulated chat, voice messages, simulated transfers, group chats, photos and notes remain available.
+当前已确认的开场顺序：
 
-## Persistence and updates
+1. 第一晚：排练结束后的 KKT 对话。
+2. 第二天：排练日常。
+3. 工作群里的安排与交流。
+4. 成员们收工后的闲聊。
+5. **8 月 2 日见面会**。
+6. 从这些日常继续铺开八月的亲密生活。
 
-- Existing phone data stays under `pocket-star-v1`; recorded audio remains in the existing `pocket-star-audio` IndexedDB.
-- New narrative state uses `pocket-story-same-blank-ch1-v2` with a versioned schema. It never writes the phone's chat or audio stores.
-- Story records live in `dist/story-data.js`. Keep the episode ID and existing post/comment/evidence IDs stable; append content rather than recreating IDs.
-- `dist/story.js` handles forum browsing, search, clues, branching and independent save export/import. `dist/story.css` styles these views; `dist/pann.css` scopes a Pann-inspired white/red ranked forum and BEST replies to forum views. Forum post recommendations are additive save fields and preserve existing progress.
-- Exploration notes export/import story JSON. Import requires an explicit in-game confirmation before replacement. Settings retain the existing phone export; recorded audio blobs are not included in that text export.
-- Progress stays in this browser; exports support manual backup and transfer. No cloud sync or real AI replies.
+### 2. 工作变得越来越密集
 
-## Validation
+随着排练、活动和个人行程增加，两个人依然在意彼此，也仍然会见面、工作和照顾对方。但高强度工作带来的疲惫，逐渐影响她们表达和沟通的能力。
 
-`npm install` then `npm test` runs DOM-based integration tests using LinkeDOM (`tests/story-flow.cjs`). They cover boot, swipe-to-unlock and passcode, forum reading and bookmarks, the three forum replies, the outsider advice panel, the progress card, the official post, the final judgment and chapter completion, rumor fragments, category search, the free-text KakaoTalk chapter, save/reload persistence, legacy phone-data isolation, HTML escaping and save export. Run `node --check` on shipped JavaScript for syntax.
+故事不把关系变化写成突然翻脸，也不预设某一方单方面冷落另一方。重点是：两个人都在努力处理自己的状态，却逐渐接不上对方真正想表达的意思。
 
-Chapter 01 closes through the official post: once the conversation reaches its last step, the feed's progress card offers `刷新热帖，查看官方更新`, which unlocks the RV JP photos and the `保存这条记录，结束第一章` button.
+### 3. 日本行程：信息差开始出现
 
-Managed preview/browser QA was unavailable in this environment; no preview server was started. Visual layout, microphone permissions, audible playback and real phone keyboard behavior still need actual browser/device QA.
+进入日本行程后，出现一个具体的时间与沟通落差：
 
+- 涩琪先行前往日本，没有提前告诉珠泫。
+- 两天后，珠泫也抵达日本，但没有直接通知涩琪。
+- 涩琪是通过 Manager 转达，才知道珠泫已经抵达。
 
-## Airport photograph credits
+这件事是关系误会逐渐显现的一部分，不应被夸大成分手、背叛或严重争吵。后续仍需通过工作安排、聊天内容和人物行动，逐步呈现双方各自的处境。
 
-The main forum thread includes two real public airport photographs from **2026-09-28**, credited to **Newsen / 지수진**. Files retain the full frame and the original watermark. The forum caption explicitly separates real photographs from fictional posts and relationship storylines.
+### 4. 论坛随故事逐步出现
 
-- `dist/assets/aseul-airport-20260928-irene.jpg`: https://www.newsen.com/news_view.php?code=100100&uid=202609281857343510
-- `dist/assets/aseul-airport-20260928-seulgi.jpg`: https://www.newsen.com/news_view.php?code=100600&uid=202609281934203510
+论坛不是故事的冷开场，也不是一个提前摆满全部线索的解谜页面。
 
-These are third-party editorial photographs, not project-owned or generated assets. Source links and credits are also available in the in-app image viewer.
+随着聊天和事件推进，相关帖子、评论与外部观察才逐步进入玩家视野。论坛中的人只能根据自己看见的公开信息讨论，可能判断正确，也可能误读；论坛不能替作者揭示私人真相。
 
+读者需要把不同应用里的碎片放在一起理解，而不是依靠某一条帖子或某一段解释得到完整答案。
 
-## Public Instagram archive
+## 核心关系与叙事原则
 
-Instagram now has two selectable public-content profiles: `hi_sseulgi` and `renebaebae`. The curated first batch contains **8 records and 71 locally packaged photographs**. The page explicitly states that it is a dated archive rather than a live or complete copy of either account. Account ownership, dates, source URLs and every image's archived URL are in `dist/instagram-data.js`.
+- **先建立亲密，再呈现变化。** 不要从冷淡、争执或单方面追逐开始。
+- **矛盾来自沟通落差。** 高强度工作、疲惫、顾虑和表达不及时共同影响关系，不把任何一方写成唯一的问题来源。
+- **两个人都要有主动性。** 关心不能只由一方承担；即使出现距离，也要保留双方真实的在意与行动。
+- **不替人物解释一切。** 通过聊天、时间、行程、照片、生活细节和行动呈现情绪，不让角色突然说出完整的主题总结。
+- **公开信息不等于私人事实。** 舞台、机场、社交平台和粉丝讨论不能单独证明私人关系或人物心理。
 
-- 2026-09-16: Japanese album update (13 photos) and two dining Stories, from https://theqoo.net/seulgi/4361583608?category=1827551682
-- 2025-05-30: Seulgi update with an Irene image among the carousel, from https://theqoo.net/seulgi/4012428821
-- 2025-06-12 and 2025-06-23: styling/backstage update and BALANCE recap, from https://theqoo.net/seulgi/4018568127
-- 2025-03-30: `by.sseulgi` film photograph of Irene; caption and original-post link are documented at https://www.fanforum.com/f509/baechu-%7Birene%7D-9-~-solo-irene-finally-coming-year-63278447/index10.html
-- 2023-11-19: Irene update and Seulgi's documented public comment, indexed at https://theqoo.net/seulgi/3022087917
-- 2023-10-26: Irene/Seulgi update indexed at https://kpopping.com/kpics/231026-Red-Velvet-Irene-Instagram-Update-with-Seulgi
+## 叙事形式与应用
 
-The last two entries are **text indexes and source links only**: no substitute photographs or invented original captions. The Korean captions for image posts are short archived excerpts, with Chinese reading translations. Real material does not establish a private relationship. The earlier invented drinks/night-road material remains in a separate explicitly fictional view. Images retain their original files; profile thumbnails crop only in CSS, while the post viewer shows the full image. Likes/follower counts are not fabricated. Saved archive records use the additive `igSaved` field in the existing story save; free chat/voice storage is unchanged.
+Pocket Story 保留模拟手机的沉浸式体验，以手机中的应用和记录承载故事。现有界面方向包括黑底沉浸式手机、原生桌面与聊天列表，以及 Pann 风格论坛、YouTube 页面和 LYSN 订阅卡片等。
+
+不同应用承担不同的信息职责：
+
+- **KakaoTalk（KKT）：** 呈现作者预先写定的聊天与日常互动。
+- **论坛（Pann 风格）：** 呈现外部观察、讨论、误读与不同观点；内容随故事进展逐步出现。
+- **Instagram：** 提供有来源和日期的公开内容档案。
+- **相册、日历、地图、备忘录等：** 记录照片、时间、地点、工作安排与生活痕迹。
+- **YouTube：** 补充公开舞台、频道和视频内容。
+- **LYSN：** 保留独立的自定义人设与自由聊天功能；它与主线剧情分开，不作为主线证据，也不改变主线人物行为。
+
+### 玩家如何参与
+
+这是**作者预先创作剧情、玩家通过手机探索发现**的叙事方式。
+
+玩家可以按自己的顺序查看当前开放的聊天、应用和记录；探索顺序可以不同，但玩家的自由输入或回复不会替人物作出决定，也不会改变主线事件、人物关系或故事结果。
+
+剧情以独立节点组织。每个节点先写完整、单独测试，再与前后节点核对连续性。剧情内容不依赖某一版状态机或 UI 实现。
+
+## 虚构与现实素材边界
+
+本作品是虚构同人创作：
+
+- 私人聊天、人物内心、匿名帖子、私人行程细节与剧情事件均为虚构内容。
+- 公开照片、公开社交内容和活动信息仅作为有来源的时间、地点或视觉参考。
+- 不将公开影像、舞台互动或粉丝猜测包装成现实私人关系的证据。
+- 不连接真实账号、真实艺人联系人或真实支付服务。
+
+## 本地运行与测试
+
+项目为静态 HTML / CSS / JavaScript，无需构建步骤或运行时服务端。
+
+在仓库根目录启动本地 HTTP 服务：
+
+```bash
+python3 -m http.server 8000
+```
+
+然后打开：
+
+```text
+http://localhost:8000/
+```
+
+运行测试：
+
+```bash
+npm install
+npm test
+```
+
+根目录的 `index.html` 是 GitHub Pages 入口，会加载 `dist/` 中的应用文件。GitHub Pages 通过 `.github/workflows/pages.yml` 发布；该工作流在 `main` 分支更新时运行，也支持手动触发。
+
+## 仓库素材与来源
+
+### 机场公开照片
+
+仓库保留两张 **2026-09-28** 的公开机场照片，来源为 **Newsen / 지수진**。原图完整保留，包含原始水印；它们是第三方编辑摄影素材，不属于项目自有或生成的图片。
+
+- `dist/assets/aseul-airport-20260928-irene.jpg` — https://www.newsen.com/news_view.php?code=100100&uid=202609281857343510
+- `dist/assets/aseul-airport-20260928-seulgi.jpg` — https://www.newsen.com/news_view.php?code=100600&uid=202609281934203510
+
+### Instagram 公开内容档案
+
+仓库中的 Instagram 内容是按日期整理的公开资料档案，不是实时或完整的账号镜像。现有资料包含 `hi_sseulgi` 与 `renebaebae` 两个公开内容档案；图片、日期和来源链接保存在对应数据文件中。
+
+已整理的来源包括：
+
+- 2026-09-16：日本专辑更新与两条餐饮 Stories，来源：https://theqoo.net/seulgi/4361583608?category=1827551682
+- 2025-05-30：包含 Irene 图片的 Seulgi 更新，来源：https://theqoo.net/seulgi/4012428821
+- 2025-06-12、2025-06-23：造型 / 后台更新与 BALANCE 回顾，来源：https://theqoo.net/seulgi/4018568127
+- 2025-03-30：`by.sseulgi` 发布的 Irene 胶片照片，文字与来源索引：https://www.fanforum.com/f509/baechu-%7Birene%7D-9-~-solo-irene-finally-coming-year-63278447/index10.html
+- 2023-11-19：Irene 更新及 Seulgi 的公开评论索引：https://theqoo.net/seulgi/3022087917
+- 2023-10-26：Irene / Seulgi 更新索引：https://kpopping.com/kpics/231026-Red-Velvet-Irene-Instagram-Update-with-Seulgi
+
+较早的两条记录只提供文字索引与来源链接，不使用替代图片或虚构原始文案。公开素材不构成私人关系的证明。所有第三方素材应保留原始来源、署名与使用边界。
